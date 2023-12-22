@@ -1,0 +1,15 @@
+{
+  "ERROR_OCCURED": "An error occurred",
+  "MIN_LENGTH": "Sorry the {{field}} minimum length is {{length}}",
+  "INVALID_PHONE_NUMBER": "Invalid phone number",
+  "INVALID_ROLE": "Sorry the value you entered '{{value}}' isn't valid please try again",
+  "INVALID_VALUE": "Sorry the value you entered '{{value}}' isn't valid please try again",
+  "NOT_ALLOWED": "Sorry you are not allowed",
+  "INVALID_MSG": "sent {{field}} is not a valid",
+  "NOT_FOUND": "Sorry '{{field}}' isn't exist please check it and try again",
+  "USER_EXISTS": "User already exists",
+  "PHONE_NUMBER_EXISTS": "phone number already exists",
+  "FIELD_EXISTS": "{{field}} already exists",
+  "UNSUPPORTED_DATATYPE": "Sorry unsupported file type only supported types is {{supported}}",
+  "EMPTY_PAYLOAD": "Nothing is sent check your data and try again"
+}

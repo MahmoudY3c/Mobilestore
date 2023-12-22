@@ -1,0 +1,122 @@
+
+:root {
+  --pink1: #ef73cb;
+  --pink2: #dc5f89;
+}
+
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.p-0 {
+  padding: 0;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.h-100 {
+  min-height: 100vh;
+}
+
+.h-80 {
+  min-height: 80vh;
+}
+
+.h-60 {
+  min-height: 60vh;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.letter-spacing {
+  letter-spacing: 0.2ch;
+}
+
+.text-3xl {
+  font-size: 5rem;
+}
+
+.text-2xl {
+  font-size: 4rem;
+}
+
+.text-xl {
+  font-size: 3rem;
+}
+
+.text-l {
+  font-size: 2rem;
+}
+
+.text-lg {
+  font-size: 1rem;
+}
+
+.icon {
+  font-size: 55px;
+}
+
+.center {
+  text-align: center;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+.bubble {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.circle {
+  background-image: linear-gradient(to top right, var(--pink1), var(--pink2));
+  border-radius: 50%;
+  position: absolute;
+  z-index: -1;
+}
+
+.circle.small {
+  top: 200px;
+  left: 150px;
+  width: 10vmin;
+  height: 10vmin;
+}
+
+.circle.medium {
+  background-image: linear-gradient(to bottom left, var(--pink1), var(--pink2));
+  bottom: -40px;
+  left: -20px;
+  width: 20vmin;
+  height: 20vmin;
+}
+
+.circle.big {
+  top: -50px;
+  right: -100px;
+  width: 40vmin;
+  height: 40vmin;
+}
