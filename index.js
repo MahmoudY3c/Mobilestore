@@ -5,11 +5,11 @@ const { PORT } = require('./config');
 require('./db/connection');
 
 // const port = normalizePort(process.env.PORT || '3000');
-app.set('port', PORT);
+// app.set('port', PORT);
 
 
 const server = http.createServer(app);
 
-server.listen(PORT);
+server.listen(PORT, '0.0.0.0');
 server.on('error', error => onServerError(error, PORT));
 server.on('listening', () => onSeverListening(server));
