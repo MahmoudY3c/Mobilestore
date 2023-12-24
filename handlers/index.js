@@ -79,6 +79,7 @@ const handlers = {
     const supportedTypes = ['JPEG', 'PNG', 'WEBP', 'GIF', 'AVIF', 'TIFF'];
     if (supportedTypes.includes(fileType.toUpperCase())) {
       console.log('supported.....');
+
       sharp(filePath)
         .toBuffer((err, data) => {
           if (err) {
@@ -100,13 +101,20 @@ const handlers = {
 
     outputLocation = outputLocation
       ? outputLocation
-      : path.join(__dirname, `../uploads/${filename}`);
+      : path.join(__dirname, '../uploads');
+
+
+    if (!fs.existsSync(outputLocation)) {
+      fs.mkdirSync(outputLocation);
+    }
+
+    const outputFile = path.join(outputLocation, filename);
 
     return new Promise((resolve, reject) => {
       sharp(imgBuffer)
         .resize(width, height)
         // eslint-disable-next-line no-unused-vars
-        .toFile(outputLocation, (err, info) => {
+        .toFile(outputFile, (err, info) => {
           if (err) reject(err);
           // console.log(info);
           resolve(filename);
