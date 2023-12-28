@@ -3,9 +3,9 @@ const Sliders = require('../../db/models/Sliders');
 const sendSliderById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const slider = await Sliders.findOne({ _id: id });
-  
+
   if (!slider) {
-    throw new Error(req.t('NOT_FOUND', { field: 'user' }));
+    throw new Error(req.t('NOT_FOUND', { field: 'slider' }));
   }
 
   res.status(200).json(slider);
