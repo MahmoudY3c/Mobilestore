@@ -6,6 +6,7 @@ const { sendSliders, validateSlidersTypes } = require('../../controllers/sliders
 const { editSliderValidationSchema, editSlider } = require('../../controllers/sliders/editSlider');
 const { deleteSlider } = require('../../controllers/sliders/deleteSlider');
 const validateImages = require('../../middleware/validateImages');
+const { sendSliderById } = require('../../controllers/sliders/sendSliderById');
 // const checkRole = require('../../middleware/jwt/checkRole');
 const router = express.Router();
 
@@ -15,6 +16,15 @@ router.get('/',
   validateSlidersTypes,
   sendExpressValidatorErrors,
   sendSliders,
+);
+
+
+/* GET users listing. */
+router.get('/:id',
+  // checkRole('admin'),
+  validateParamId,
+  sendExpressValidatorErrors,
+  sendSliderById,
 );
 
 router.put('/:id',
