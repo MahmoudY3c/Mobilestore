@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { ROLES, SERVICE } = require('../../config');
+const { ROLES } = require('../../config');
 const { verifyPassword, hashPassword } = require('../../handlers/encryption');
 const { Schema } = mongoose;
 
@@ -20,38 +20,39 @@ const UsersSchema = new Schema({
     type: String,
     enum: ROLES,
   },
-  phoneType: {
-    type: String,
-  },
-  serviceType: {
-    type: String,
-  },
-  serviceStatus: {
-    type: String,
-    enum: SERVICE.type,
-  },
-  warantiDuration: {
-    type: String,
-  },
+  services: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: 'CustomerServices',
+    },
+  ],
 }, { timestamps: true });
 
-
-UsersSchema.statics.findByCredentials = async ({ email, id, password }) => {
+UsersSchema.statics.findByCredentials = async ({ email, id, password, req }) => {
   const user = id
     ? await Users.findById(id)
     : await Users.findOne({ email });
 
   if (!user) {
-    throw new Error('user don\'t exist');
+    throw new Error(req ? req.t('USER_NOT_EXISTS') : 'user don\'t exist');
   }
 
   const isMatch = await verifyPassword(password, user.password);
   if (!isMatch) {
-    throw new Error('wrong Password');
+    throw new Error(req ? req.t('WRONG_PASSWORD') : 'wrong Password');
   }
 
   return user;
 };
+
+const autoPopulate = function (next) {
+  this.populate('services');
+  next();
+};
+
+UsersSchema
+  .pre('findOne', autoPopulate)
+  .pre('find', autoPopulate);
 
 UsersSchema.pre('save', async function (next) {
   // this is refering to the user object
@@ -63,8 +64,8 @@ UsersSchema.pre('save', async function (next) {
 });
 
 UsersSchema.methods.toJSON = function () {
-  const { userName, phoneNumber, role, _id, phoneType, serviceType, serviceStatus, warantiDuration } = this.toObject();
-  return { userName, phoneNumber, role, _id, phoneType, serviceType, serviceStatus, warantiDuration };
+  const { userName, phoneNumber, role, _id, services } = this.toObject();
+  return { userName, phoneNumber, role, _id, services };
 };
 
 const Users = mongoose.models.Users

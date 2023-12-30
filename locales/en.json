@@ -8,6 +8,8 @@
   "INVALID_MSG": "sent {{field}} is not a valid",
   "NOT_FOUND": "Sorry '{{field}}' isn't exist please check it and try again",
   "USER_EXISTS": "User already exists",
+  "USER_NOT_EXISTS": "Sorry user not exists",
+  "WRONG_PASSWORD": "wrong password",
   "PHONE_NUMBER_EXISTS": "phone number already exists",
   "FIELD_EXISTS": "{{field}} already exists",
   "UNSUPPORTED_DATATYPE": "Sorry unsupported file type only supported types is {{supported}}",
