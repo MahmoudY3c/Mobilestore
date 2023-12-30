@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { ROLES } = require('../../config');
 const { verifyPassword, hashPassword } = require('../../handlers/encryption');
+const { autoPopulate } = require('../../handlers/mdb');
 const { Schema } = mongoose;
 
 const UsersSchema = new Schema({
@@ -45,14 +46,9 @@ UsersSchema.statics.findByCredentials = async ({ email, id, password, req }) => 
   return user;
 };
 
-const autoPopulate = function (next) {
-  this.populate('services');
-  next();
-};
-
 UsersSchema
-  .pre('findOne', autoPopulate)
-  .pre('find', autoPopulate);
+  .pre('findOne', autoPopulate('services'))
+  .pre('find', autoPopulate('services'));
 
 UsersSchema.pre('save', async function (next) {
   // this is refering to the user object
