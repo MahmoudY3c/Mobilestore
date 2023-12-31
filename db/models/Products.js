@@ -12,17 +12,21 @@ const ProductsSchema = new Schema({
   images: {
     type: Array,
   },
-  company: {
+  brand: {
     type: String,
   },
   quantity: {
-    type: String,
+    type: Number,
   },
   price: {
+    type: Number,
+  },
+  currency: {
     type: String,
+    default: 'USD',
   },
   discount: {
-    type: String,
+    type: Number,
   },
   has_coupon: {
     type: Boolean,

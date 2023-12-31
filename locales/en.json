@@ -15,5 +15,7 @@
   "FIELD_EXISTS": "{{field}} already exists",
   "UNSUPPORTED_DATATYPE": "Sorry unsupported file type only supported types is {{supported}}",
   "EMPTY_PAYLOAD": "Nothing is sent check your data and try again",
-  "SHOULD_BE_IN_LIST": "The value of {{field}} should be one of the following items ({{list}})"
+  "SHOULD_BE_IN_LIST": "The value of {{field}} should be one of the following items ({{list}})",
+  "INVALID_PRODUCT_NAME": "Invalid product name",
+  "INVALID_PRODUCT_DESCRIPTION": "Invalid product description"
 }

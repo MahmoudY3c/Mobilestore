@@ -1,7 +1,9 @@
 
 require('dotenv').config();
+
 const {
   DEV_DATABASE_URL, DATABASE_URL, NODE_ENV, PORT,
+  CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_URL,
 } = process.env;
 
 const config = {
@@ -13,6 +15,10 @@ const config = {
     : NODE_ENV === 'development'
       ? DEV_DATABASE_URL
       : DEV_DATABASE_URL,
+  CLOUDINARY_NAME,
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET,
+  CLOUDINARY_URL,
   ROLES: ['customer', 'admin'],
   IMAGE_TYPES: ['JPEG', 'PNG', 'WEBP', 'GIF', 'AVIF', 'TIFF'],
   SLIDER: {

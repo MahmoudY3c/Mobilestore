@@ -15,5 +15,7 @@
   "FIELD_EXISTS": "{{field}} موجود بالفعل",
   "UNSUPPORTED_DATATYPE": "عذرا صيغة الملف غير مدعومة الصيغ المدعومة هى {{supported}}",
   "EMPTY_PAYLOAD": "لم يتم ارسال شئ برجاء التاكد من البيانات المرسلة واعادة المحاولة",
-  "SHOULD_BE_IN_LIST": "عذرا قيمة ال {{field}} يجب ان تكون واحدة من الاتى ({{list}})"
+  "SHOULD_BE_IN_LIST": "عذرا قيمة ال {{field}} يجب ان تكون واحدة من الاتى ({{list}})",
+  "INVALID_PRODUCT_NAME": "اسم المنتج غير صالح",
+  "INVALID_PRODUCT_DESCRIPTION": "وصف المنتج غير صالح"
 }
