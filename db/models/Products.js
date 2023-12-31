@@ -38,9 +38,11 @@ ProductsSchema
   .pre('findOne', autoPopulate('details'))
   .pre('find', autoPopulate('details'));
 
-module.exports = mongoose.models.Products
+const Products = mongoose.models.Products
   ? mongoose.model('Products')
   : mongoose.model(
     'Products',
     ProductsSchema,
   );
+
+module.exports = Products;

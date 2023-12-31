@@ -2,7 +2,7 @@ const { default: mongoose } = require('mongoose');
 const { SERVICE } = require('../../config');
 const { Schema } = mongoose;
 
-const CustomerServicesSchema = new Schema({
+const RepairServicesSchema = new Schema({
   phoneType: {
     type: String,
   },
@@ -10,20 +10,27 @@ const CustomerServicesSchema = new Schema({
     type: String,
   },
   serviceCost: {
+    type: Number,
+  },
+  serviceCurrency: {
     type: String,
   },
   serviceStatus: {
     type: String,
     enum: SERVICE.type,
+    default: 'pending',
   },
   warantiDuration: {
     type: String,
   },
 });
 
-module.exports = mongoose.models.CustomerServices
-  ? mongoose.model('CustomerServices')
+const RepairServices = mongoose.models.RepairServices
+  ? mongoose.model('RepairServices')
   : mongoose.model(
-    'CustomerServices',
-    CustomerServicesSchema,
+    'RepairServices',
+    RepairServicesSchema,
   );
+
+module.exports = RepairServices;
+

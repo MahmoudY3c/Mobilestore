@@ -40,9 +40,12 @@ const ProductDetailsSchema = new Schema({
   },
 });
 
-module.exports = mongoose.models.ProductDetails
+
+const ProductDetails = mongoose.models.ProductDetails
   ? mongoose.model('ProductDetails')
   : mongoose.model(
     'ProductDetails',
     ProductDetailsSchema,
   );
+
+module.exports = ProductDetails;
