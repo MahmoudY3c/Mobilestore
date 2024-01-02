@@ -9,6 +9,16 @@ const categoriesPayload = isOptional => ({
     notEmpty: true,
     optional: isOptional,
     errorMessage: (value, { req }) => req.t('INVALID_VALUE', { value }),
+    custom: {
+      async options(value, { req }) {
+        const isExists = await Categories.findOne({ name: value });
+        if (isExists) {
+          throw new Error(req.t('CATEGORY_EXISTS'));
+        }
+
+        return true;
+      },
+    },
   },
 });
 

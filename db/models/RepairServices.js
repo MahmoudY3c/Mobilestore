@@ -23,7 +23,7 @@ const RepairServicesSchema = new Schema({
   warantiDuration: {
     type: String,
   },
-});
+}, { timestamps: true });
 
 const RepairServices = mongoose.models.RepairServices
   ? mongoose.model('RepairServices')

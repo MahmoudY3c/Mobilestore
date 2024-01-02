@@ -59,6 +59,6 @@ module.exports = {
       ? `https://${url.host}${url.pathname}`
       : url.href;
 
-    return `${url}/${filename}`;
+    return `${url}/${filename || ''}`;
   },
 };

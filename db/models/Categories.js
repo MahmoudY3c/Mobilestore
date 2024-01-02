@@ -8,7 +8,6 @@ const CategoriesSchema = new Schema({
   },
 }, { timestamps: true });
 
-
 const Categories = mongoose.models.Categories
   ? mongoose.model('Categories')
   : mongoose.model(

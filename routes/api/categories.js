@@ -1,24 +1,32 @@
 
 const { Router } = require('express');
 const router = Router();
-const { createCategory } = require('../../controllers/category/createCategory.js');
+const { createCategory, createCategoryValidationSchema } = require('../../controllers/category/createCategory.js');
 const { deleteCategory } = require('../../controllers/category/deleteCategory.js');
 const { editCategory } = require('../../controllers/category/editCategory.js');
 const { sendCategories } = require('../../controllers/category/sendCategories.js');
 const { sendCategoryById } = require('../../controllers/category/sendCategoryById.js');
+const { validateParamId } = require('../../middleware/validators/validateParams.js');
+const sendExpressValidatorErrors = require('../../middleware/sendExpressValidatorErrors.js');
 
 router.post(
   '/',
+  createCategoryValidationSchema,
+  sendExpressValidatorErrors,
   createCategory,
 );
 
 router.delete(
-  '/',
+  '/:id',
+  validateParamId,
+  sendExpressValidatorErrors,
   deleteCategory,
 );
 
 router.put(
-  '/',
+  '/:id',
+  validateParamId,
+  sendExpressValidatorErrors,
   editCategory,
 );
 
@@ -29,6 +37,8 @@ router.get(
 
 router.get(
   '/:id',
+  validateParamId,
+  sendExpressValidatorErrors,
   sendCategoryById,
 );
 

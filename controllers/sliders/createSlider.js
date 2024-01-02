@@ -3,7 +3,6 @@ const { asyncHandler } = require('../../handlers/error');
 const { SLIDER: SLIDER_SIZE } = require('../../config');
 const Sliders = require('../../db/models/Sliders');
 const multer = require('multer');
-const { getCloudinaryUrl } = require('../../cloudinary');
 const upload = multer();
 
 // const sliderUpload = upload.fields([
@@ -49,8 +48,10 @@ const createSlider = asyncHandler(async (req, res) => {
   const { result } = req;
   const { title, type } = req.body;
   const sliderPayload = { title, type };
-  sliderPayload.filename = result.filename;
-  sliderPayload.image = getCloudinaryUrl(result.filename);
+
+  sliderPayload.fileName = result.fileName;
+  sliderPayload.fileTitle = result.fileTitle;
+  sliderPayload.image = result.fileUrl;
 
   const slider = new Sliders(sliderPayload);
   await slider.save();

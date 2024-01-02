@@ -41,7 +41,7 @@ const ProductsSchema = new Schema({
     ref: 'Categories',
     required: true,
   },
-});
+}, { timestamps: true });
 
 ProductsSchema
   .pre('findOne', autoPopulate('details'))

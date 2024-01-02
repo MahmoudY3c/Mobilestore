@@ -7,7 +7,10 @@ const SlidersSchema = new Schema({
     type: String,
     required: true,
   },
-  filename: {
+  fileName: {
+    type: String,
+  },
+  fileTitle: {
     type: String,
   },
   title: {
