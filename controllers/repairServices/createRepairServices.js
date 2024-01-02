@@ -58,4 +58,4 @@ const createRepairServices = asyncHandler(async (req, res) => {
   res.status(201).json(newRepairServices);
 });
 
-module.exports = { createrepairServices: createRepairServices, createRepairServicesValidationSchema, repairServicesPayload };
+module.exports = { createRepairServices, createRepairServicesValidationSchema, repairServicesPayload };
