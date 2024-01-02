@@ -1,9 +1,9 @@
 const { checkSchema } = require('express-validator');
 const { asyncHandler } = require('../../handlers/error');
-const { resizeSliderImage } = require('../../handlers');
 const { SLIDER: SLIDER_SIZE } = require('../../config');
 const Sliders = require('../../db/models/Sliders');
 const multer = require('multer');
+const { getCloudinaryUrl } = require('../../cloudinary');
 const upload = multer();
 
 // const sliderUpload = upload.fields([
@@ -46,13 +46,11 @@ const createSliderPayload = slidersPayload(false);
 const createSliderValidationSchema = checkSchema(createSliderPayload);
 
 const createSlider = asyncHandler(async (req, res) => {
-  const { file } = req;
+  const { result } = req;
   const { title, type } = req.body;
   const sliderPayload = { title, type };
-  sliderPayload.image = await resizeSliderImage(file.buffer, {
-    height: SLIDER_SIZE.height,
-    width: SLIDER_SIZE.width,
-  });
+  sliderPayload.filename = result.filename;
+  sliderPayload.image = getCloudinaryUrl(result.filename);
 
   const slider = new Sliders(sliderPayload);
   await slider.save();

@@ -7,6 +7,9 @@ const SlidersSchema = new Schema({
     type: String,
     required: true,
   },
+  filename: {
+    type: String,
+  },
   title: {
     type: String,
     required: true,
@@ -16,7 +19,6 @@ const SlidersSchema = new Schema({
     enum: SLIDER.type,
   },
 }, { timestamps: true });
-
 
 const Sliders = mongoose.models.Sliders
   ? mongoose.model('Sliders')

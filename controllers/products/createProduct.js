@@ -52,6 +52,11 @@ const productsPayload = isOptional => ({
     trim: true,
     errorMessage: (value, { req }) => req.t('INVALID_MSG', { field: 'discount' }),
   },
+  category: {
+    trim: true,
+    isMongoId: true,
+    errorMessage: (value, { req }) => req.t('INVALID_FIELD', { field: 'category' }),
+  },
 });
 
 const createProductPayload = productsPayload(false);

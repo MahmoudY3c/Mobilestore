@@ -7,6 +7,8 @@ const { editSliderValidationSchema, editSlider } = require('../../controllers/sl
 const { deleteSlider } = require('../../controllers/sliders/deleteSlider');
 const validateImages = require('../../middleware/validateImages');
 const { sendSliderById } = require('../../controllers/sliders/sendSliderById');
+const uploadFilesToCloudinary = require('../../middleware/uploadFilesToCloudinary');
+const resizeSliderImageAsBuffer = require('../../middleware/resizeSliderImageAsBuffer');
 // const checkRole = require('../../middleware/jwt/checkRole');
 const router = express.Router();
 
@@ -50,6 +52,8 @@ router.post('/',
   validateImages(),
   createSliderValidationSchema,
   sendExpressValidatorErrors,
+  resizeSliderImageAsBuffer('single'),
+  uploadFilesToCloudinary('single'),
   createSlider,
 );
 

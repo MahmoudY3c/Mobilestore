@@ -36,6 +36,11 @@ const ProductsSchema = new Schema({
     type: mongoose.Types.ObjectId,
     ref: 'ProductDetails',
   },
+  category: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Categories',
+    required: true,
+  },
 });
 
 ProductsSchema

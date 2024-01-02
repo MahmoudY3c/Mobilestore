@@ -3,7 +3,12 @@ const RepairServices = require('../../db/models/RepairServices');
 
 const deleteRepairServices = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  await RepairServices.deleteOne({ id });
+  const repairServ = await RepairServices.findByIdAndDelete({ id });
+
+  if (!repairServ) {
+    return res.status(404).json({ message: req.t('NOT_FOUND', { field: id }) });
+  }
+
   res.status(200).json({ success: true });
 });
 

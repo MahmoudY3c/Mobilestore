@@ -8,6 +8,7 @@ const i18next = require('./locales');
 const i18nextMiddleware = require('i18next-http-middleware');
 const cors = require('cors');
 const { NODE_ENV } = require('./config');
+const { cloudinary } = require('./cloudinary');
 
 const app = express();
 
@@ -20,7 +21,7 @@ app.use(cors({
   credentials: NODE_ENV === 'development',
   preflightContinue: NODE_ENV === 'development',
 }));
-
+console.log(cloudinary.url('uploads'));
 
 app.use(i18nextMiddleware.handle(i18next));
 app.use(logger('dev'));

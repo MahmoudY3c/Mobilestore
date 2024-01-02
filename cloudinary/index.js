@@ -1,5 +1,6 @@
 const { v2: cloudinary } = require('cloudinary');
 const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } = require('../config');
+const { uniqueId } = require('../handlers');
 
 cloudinary.config({
   cloud_name: CLOUDINARY_NAME,
@@ -19,8 +20,11 @@ const errors = {
 
 
 module.exports = {
+  default: cloudinary,
   cloudinary,
   uploadStream(buffer, filename) {
+    filename = filename || uniqueId();
+
     return new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream({ public_id: `uploads/${filename}` }, (error, result) => {
         if (error) {
@@ -28,6 +32,7 @@ module.exports = {
           console.log(errors[error.status]);
         }
 
+        result.filename = filename;
         resolve(result);
       }).end(buffer);
     });
@@ -42,8 +47,18 @@ module.exports = {
             console.log(errors[error.status]);
           }
 
+          result.filename = filename;
           resolve(result);
         });
     });
+  },
+
+  getCloudinaryUrl(filename) {
+    let url = new URL(cloudinary.url('uploads'));
+    url = url.protocol === 'http:'
+      ? `https://${url.host}${url.pathname}`
+      : url.href;
+
+    return `${url}/${filename}`;
   },
 };
