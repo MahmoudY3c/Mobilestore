@@ -8,7 +8,12 @@
     "prod": "pm2 start ecosystem.config.js",
     "prod:stop": "pm2 stop ecosystem.config.js",
     "prod:reload": "pm2 reload ecosystem.config.js",
-    "prod:restart": "pm2 restart ecosystem.config.js"
+    "prod:restart": "pm2 restart ecosystem.config.js",
+    "api:extract": "node scripts/extract-api-links",
+    "api:checkSchema": "node scripts/checkSchema-api-links",
+    "api:create": "node scripts/createApiFromControllers",
+    "api:crud": "node scripts/crud-api-links",
+    "db:schema": "node scripts/crud-api-links"
   },
   "dependencies": {
     "axios": "^1.6.3",

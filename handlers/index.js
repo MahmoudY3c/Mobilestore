@@ -4,6 +4,7 @@ const fs = require('fs');
 const { logger } = require('../logger');
 const sharp = require('sharp');
 const path = require('path');
+const { SLIDER } = require('../config');
 
 const handlers = {
   normalizePort(val) {
@@ -94,7 +95,7 @@ const handlers = {
         });
     }
   },
-  resizeSliderImage(imgBuffer, { height = 500, width = 500, outputLocation } = {}) {
+  resizeSliderImage(imgBuffer, { height = SLIDER.height || 500, width = SLIDER.width || 500, outputLocation } = {}) {
     const filename = outputLocation
       ? outputLocation.split('/')[outputLocation.split('/').length - 1]
       : `${handlers.uniqueId()}.webp`;
@@ -112,7 +113,9 @@ const handlers = {
 
     return new Promise((resolve, reject) => {
       sharp(imgBuffer)
-        .resize(width, height)
+        .resize(width, height, {
+          fit: sharp.fit.fill,
+        })
         // eslint-disable-next-line no-unused-vars
         .toFile(outputFile, (err, info) => {
           if (err) reject(err);
@@ -127,6 +130,14 @@ const handlers = {
     } catch (err) {
       logger.error(err);
     }
+  },
+  createFolder(folderPath) {
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath);
+    }
+  },
+  createFile(folderPath, contents) {
+    fs.writeFileSync(folderPath, contents || '');
   },
 };
 

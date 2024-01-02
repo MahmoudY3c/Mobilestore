@@ -1,0 +1,3 @@
+{
+  "route": "const { Router } = require('express');\n  const router = Router();\n  router.get('/', (req, res) => {\n    send.send('ok');\n  });\n  \n\n  module.exports = router;"
+}

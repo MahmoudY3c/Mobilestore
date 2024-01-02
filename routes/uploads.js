@@ -1,5 +1,5 @@
 const express = require('express');
-const passCloudinaryPath = require('../middleware/retriveFilesFromCloudinary');
+const passCloudinaryPath = require('../middleware/passCloudinaryPath');
 const { sendFileByNameFromCloudinary } = require('../controllers/uploads/sendFileByNameFromCloudinary');
 const router = express.Router();
 

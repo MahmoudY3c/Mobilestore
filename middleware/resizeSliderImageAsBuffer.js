@@ -8,10 +8,7 @@ const resizeSliderImageAsBuffer = (type, { height = SLIDER_SIZE.height, width = 
       const fileBuffer = req.file.buffer;
       const buffer = await sharp(fileBuffer)
         .resize(width, height, {
-          // fit: sharp.fit.inside,
-          // fit: 'contain',
-          // fit: 'inside',
-          fit: 'fill',
+          fit: sharp.fit.fill,
         })
         .toBuffer();
 
