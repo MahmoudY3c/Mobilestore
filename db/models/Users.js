@@ -24,7 +24,7 @@ const UsersSchema = new Schema({
   services: [
     {
       type: mongoose.Types.ObjectId,
-      ref: 'CustomerServices',
+      ref: 'RepairServices',
     },
   ],
 }, { timestamps: true });
