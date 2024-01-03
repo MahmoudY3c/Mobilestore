@@ -15,7 +15,7 @@ router.use('/users', usersRouter);
 router.use('/sliders', slidersRouter);
 router.use('/categories', categoriesRouter);
 router.use('/products', productsRouter);
-router.use('/repair-service', repairServicesRouter);
+router.use('/repair-services', repairServicesRouter);
 
 router.use(asyncErrorHandler);
 router.use(JSONErrorHandler);

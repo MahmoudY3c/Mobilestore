@@ -7,5 +7,12 @@ const validateParamId = checkSchema({
   },
 }, ['params']);
 
-module.exports = { validateParamId };
+const validateQueryUserId = checkSchema({
+  userId: {
+    isMongoId: true,
+    errorMessage: (value, { req }) => req.t('INVALID_ID', { id: value }),
+  },
+}, ['query']);
+
+module.exports = { validateParamId, validateQueryUserId };
 

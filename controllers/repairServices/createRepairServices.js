@@ -3,8 +3,14 @@ const { asyncHandler } = require('../../handlers/error');
 const RepairServices = require('../../db/models/RepairServices');
 const { SERVICE } = require('../../config');
 const { extractRequiredFields } = require('../../handlers');
+const Users = require('../../db/models/Users');
 
 const repairServicesPayload = isOptional => ({
+  userId: {
+    optional: Boolean(isOptional),
+    isMongoId: true,
+    errorMessage: (value, { req }) => req.t('INVALID_ID', { id: value }),
+  },
   phoneType: {
     trim: true,
     notEmpty: true,
@@ -26,12 +32,12 @@ const repairServicesPayload = isOptional => ({
   serviceCurrency: {
     trim: true,
     isString: true,
-    optional: Boolean(isOptional),
+    optional: true,
     errorMessage: (value, { req }) => req.t('INVALID_VALUE', { value }),
   },
   warantiDuration: {
     trim: true,
-    optional: Boolean(isOptional),
+    optional: true,
     errorMessage: (value, { req }) => req.t('INVALID_VALUE', { value }),
   },
   serviceStatus: {
@@ -54,7 +60,17 @@ const createRepairServicesValidationSchema = checkSchema(createRepairServicesPay
 const createRepairServices = asyncHandler(async (req, res) => {
   const repairServicesPayload = extractRequiredFields(Object.keys(createRepairServicesPayload), req.body);
   const newRepairServices = new RepairServices(repairServicesPayload);
+
+  const user = await Users.findByIdAndUpdate(newRepairServices.userId.toString(), {
+    $push: {
+      services: newRepairServices._id.toString(),
+    },
+  });
+
+  console.log(user);
+
   await newRepairServices.save();
+
   res.status(201).json(newRepairServices);
 });
 

@@ -3,6 +3,9 @@ const { SERVICE } = require('../../config');
 const { Schema } = mongoose;
 
 const RepairServicesSchema = new Schema({
+  userId: {
+    type: mongoose.Types.ObjectId,
+  },
   phoneType: {
     type: String,
   },
@@ -14,6 +17,7 @@ const RepairServicesSchema = new Schema({
   },
   serviceCurrency: {
     type: String,
+    default: 'USD',
   },
   serviceStatus: {
     type: String,
