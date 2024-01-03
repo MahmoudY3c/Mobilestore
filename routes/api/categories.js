@@ -3,7 +3,7 @@ const { Router } = require('express');
 const router = Router();
 const { createCategory, createCategoryValidationSchema } = require('../../controllers/category/createCategory.js');
 const { deleteCategory } = require('../../controllers/category/deleteCategory.js');
-const { editCategory } = require('../../controllers/category/editCategory.js');
+const { editCategory, editCategoryValidationSchema } = require('../../controllers/category/editCategory.js');
 const { sendCategories } = require('../../controllers/category/sendCategories.js');
 const { sendCategoryById } = require('../../controllers/category/sendCategoryById.js');
 const { validateParamId } = require('../../middleware/validators/validateParams.js');
@@ -26,6 +26,7 @@ router.delete(
 router.put(
   '/:id',
   validateParamId,
+  editCategoryValidationSchema,
   sendExpressValidatorErrors,
   editCategory,
 );

@@ -49,7 +49,7 @@ const createSlider = asyncHandler(async (req, res) => {
   const { title, type } = req.body;
   const sliderPayload = { title, type };
 
-  sliderPayload.fileName = result.fileName;
+  sliderPayload.fileName = result.filename;
   sliderPayload.fileTitle = result.fileTitle;
   sliderPayload.image = result.fileUrl;
 

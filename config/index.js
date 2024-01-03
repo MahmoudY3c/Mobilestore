@@ -29,6 +29,10 @@ const config = {
   SERVICE: {
     type: ['pending', 'active', 'refused', 'done'],
   },
+  uploads: {
+    default: 'uploads',
+    temp: 'temp',
+  },
 };
 
 module.exports = { ...config };

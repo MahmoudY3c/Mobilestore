@@ -15,7 +15,7 @@ const uploadArrayBuffer = type => {
       fs.writeFileSync(file.buffer, path.join(__dirname, `../uploads/${name}`));
       const result = { ...file, filename };
       result.fileUrl = `${req.protocol}://${req.get('host')}/uploads/${filename}`;
-      result.fileTitle = file.originalName;
+      result.fileTitle = file.originalname;
       req.result = result;
     } else {
       const { files } = req;
@@ -27,7 +27,7 @@ const uploadArrayBuffer = type => {
           fs.writeFileSync(file.buffer, path.join(__dirname, `../uploads/${name}`));
           const result = { ...file, filename };
           result.fileUrl = `${req.get('protocol')}://${req.get('host')}/${filename}`;
-          result.fileTitle = file.originalName;
+          result.fileTitle = file.originalname;
           req.result.push(result);
         }
       }
