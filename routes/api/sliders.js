@@ -35,6 +35,8 @@ router.put('/:id',
   validateParamId,
   editSliderValidationSchema,
   sendExpressValidatorErrors,
+  resizeSliderImageAsBuffer('single'),
+  uploadFilesToCloudinary('single'),
   editSlider,
 );
 
