@@ -30,11 +30,11 @@ router.get('/:id',
 );
 
 router.put('/:id',
+  sliderUpload,
+  validateImages(true),
   validateParamId,
   editSliderValidationSchema,
   sendExpressValidatorErrors,
-  sliderUpload,
-  validateImages(true),
   editSlider,
 );
 
