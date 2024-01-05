@@ -1,5 +1,5 @@
 const { checkSchema } = require('express-validator');
-const { ROLES, SERVICE } = require('../../config');
+const { ROLES } = require('../../config');
 const { asyncHandler } = require('../../handlers/error');
 const Users = require('../../db/models/Users');
 const { extractRequiredFields } = require('../../handlers');
@@ -42,24 +42,6 @@ const usersPayload = isOptional => ({
       errorMessage: (value, { req }) => req.t('INVALID_ROLE', { value }),
     },
   },
-  serviceType: {
-    optional: Boolean(isOptional),
-    isString: true,
-    trim: true,
-    errorMessage: (value, { req }) => req.t('INVALID_MSG', { field: 'serviceType' }),
-  },
-  warantiDuration: {
-    optional: true,
-    isString: true,
-    trim: true,
-  },
-  serviceStatus: {
-    optional: true,
-    isIn: {
-      options: [SERVICE.type],
-      errorMessage: (value, { req }) => req.t('INVALID_MSG', { field: 'serviceStatus' }),
-    },
-  },
 });
 
 const createUserPayload = usersPayload(false);
@@ -75,7 +57,7 @@ const createUser = asyncHandler(async (req, res) => {
 
   const user = new Users(userPayload);
   await user.save();
-  res.status(201).json({ success: true });
+  res.status(201).json(user);
 });
 
 module.exports = { createUser, createUserValidationSchema, usersPayload };

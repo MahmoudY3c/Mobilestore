@@ -6,12 +6,14 @@ const sendFileByNameFromCloudinary = asyncHandler(async (req, res, next) => {
     const { filePath } = req;
     const { filename } = req.params;
     const imageUrl = `${filePath}/${filename}`;
+    const controller = new AbortController();
 
     // Fetch the image from Cloudinary and stream it to the client
     const response = await axios({
       url: imageUrl,
       method: 'GET',
       responseType: 'stream',
+      signal: controller.signal,
     });
 
 
@@ -27,6 +29,8 @@ const sendFileByNameFromCloudinary = asyncHandler(async (req, res, next) => {
     const serverLastModified = response.headers['last-modified'];
 
     if ((clientLastModified && serverLastModified) && (clientLastModified === serverLastModified)) {
+      // cancel the request
+      controller.abort();
       // The client has a cached version of the image, send a 304 Not Modified response
       res.status(304).end();
     } else {

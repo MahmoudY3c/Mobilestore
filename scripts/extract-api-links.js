@@ -16,6 +16,8 @@ function extractRoutes(dataDesigner) {
   let routeFiles = fs.readdirSync(routesPath);
   routeFiles = routeFiles.filter(e => !excludeFiles.includes(e));
 
+  console.log(routeFiles);
+
   const routes = routeFiles.reduce((acc, file) => {
     const filePath = path.join(routesPath, file);
     const routeContent = fs.readFileSync(filePath, 'utf-8');
@@ -29,7 +31,7 @@ function extractRoutes(dataDesigner) {
 }
 
 function extractRoutePaths(content, file, dataDesigner) {
-  const regex = /(app|router)\.[get|post|put|delete]+\(['"]([\w/:-]+)['"]/g;
+  const regex = /(app|router)\.[get|post|put|delete]+\((['"](([\w/:-]+)['"])|(\n.+?['"]([\w/:-]+)['"]))/g;
   const matches = content.replace(/\/\/.+|\/\*.+\*\//g, '').match(regex);
 
   if (matches) {
@@ -37,7 +39,7 @@ function extractRoutePaths(content, file, dataDesigner) {
       const method = match.match(/get|post|put|delete/)?.[0];
       if (!method) return null;
       const fileName = file.replace(path.extname(file), '');
-      const routePath = match.replace(/(app|router)\.[get|post|put|delete]+\(['"]/, `/${fileName}`).replace(/'/g, '');
+      const routePath = match.replace(/(app|router)\.[get|post|put|delete]+\(((['"])|(\n.+?['"]))/, `/${fileName}`).replace(/'/g, '');
       return dataDesigner ? dataDesigner(routePath, method?.toUpperCase()) : `${routePath} {${method?.toUpperCase()}}`;
     }).filter(e => e);
   }
