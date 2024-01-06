@@ -61,13 +61,17 @@ const createRepairServices = asyncHandler(async (req, res) => {
   const repairServicesPayload = extractRequiredFields(Object.keys(createRepairServicesPayload), req.body);
   const newRepairServices = new RepairServices(repairServicesPayload);
 
-  const user = await Users.findByIdAndUpdate(newRepairServices.userId.toString(), {
+  const user = await Users.findByIdAndUpdate(repairServicesPayload.userId, {
     $push: {
       services: newRepairServices._id.toString(),
     },
   });
 
-  console.log(user);
+  if (!user) {
+    return res.status(404).json({ message: req.t('NOT_FOUND', { field: 'user' }) });
+  }
+
+  console.log(user, repairServicesPayload);
 
   await newRepairServices.save();
 
