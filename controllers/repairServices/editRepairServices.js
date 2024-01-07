@@ -6,6 +6,7 @@ const { repairServicesPayload } = require('./createRepairServices');
 
 
 const editRepairServicesPayload = repairServicesPayload(true);
+delete editRepairServicesPayload.userId;
 const editRepairServicesValidationSchema = checkSchema(editRepairServicesPayload);
 
 const editRepairServices = asyncHandler(async (req, res) => {
