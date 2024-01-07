@@ -41,6 +41,10 @@ const ProductsSchema = new Schema({
     ref: 'Categories',
     required: true,
   },
+  recommended: {
+    type: Boolean,
+    default: false,
+  },
 }, { timestamps: true });
 
 ProductsSchema
