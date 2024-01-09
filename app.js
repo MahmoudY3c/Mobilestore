@@ -17,10 +17,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(cors({
-  origin: NODE_ENV === 'development',
-  credentials: NODE_ENV === 'development',
-  preflightContinue: NODE_ENV === 'development',
+  origin: ['development', 'render'].includes(NODE_ENV),
+  credentials: ['development', 'render'].includes(NODE_ENV),
+  preflightContinue: ['development', 'render'].includes(NODE_ENV),
 }));
+
 console.log(cloudinary.url('uploads'));
 
 app.use(i18nextMiddleware.handle(i18next));
