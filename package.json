@@ -13,7 +13,8 @@
     "api:checkSchema": "node scripts/checkSchema-api-links",
     "api:create": "node scripts/createApiFromControllers",
     "api:crud": "node scripts/crud-api-links",
-    "db:schema": "node scripts/crud-api-links"
+    "db:schema": "node scripts/crud-api-links",
+    "updateKeys": "node keys/generateKeys.js"
   },
   "dependencies": {
     "axios": "^1.6.3",
@@ -31,10 +32,12 @@
     "i18next": "^23.7.11",
     "i18next-fs-backend": "^2.3.1",
     "i18next-http-middleware": "^3.5.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
     "mongoose-beautiful-unique-validation": "^7.1.1",
     "morgan": "~1.9.1",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.8",
     "patch-package": "^8.0.0",
     "sharp": "0.32.5",
     "uuidv4": "^6.2.13",

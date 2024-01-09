@@ -1,3 +1,6 @@
+const path = require('path');
+const { milliseconds } = require('../handlers/time');
+const fs = require('fs');
 
 require('dotenv').config();
 
@@ -33,6 +36,27 @@ const config = {
     default: 'uploads',
     temp: 'temp',
   },
+  TokensConfig: {
+    refreshMs: milliseconds.days(7), // 30 days
+    refresh: '7d',
+    expairs: '5h',
+  },
+  RSASECRET: fs.readFileSync(
+    path.resolve(__dirname,
+      NODE_ENV === 'render'
+        ? '/etc/secrets/privateKey.pem'
+        : '../keys/pem/privateKey.pem',
+    ),
+    'utf-8',
+  ),
+  RSAPUBLIC: fs.readFileSync(
+    path.resolve(__dirname,
+      NODE_ENV === 'render'
+        ? '/etc/secrets/publicKey.pem'
+        : '../keys/pem/publicKey.pem',
+    ),
+    'utf-8',
+  ),
 };
 
 module.exports = { ...config };

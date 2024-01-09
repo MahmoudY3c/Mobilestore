@@ -29,10 +29,12 @@ const UsersSchema = new Schema({
   ],
 }, { timestamps: true });
 
-UsersSchema.statics.findByCredentials = async ({ email, id, password, req }) => {
+UsersSchema.statics.findByCredentials = async ({ email, phoneNumber, id, password, req }) => {
   const user = id
     ? await Users.findById(id)
-    : await Users.findOne({ email });
+    : phoneNumber
+      ? await Users.findOne({ phoneNumber })
+      : await Users.findOne({ email });
 
   if (!user) {
     throw new Error(req ? req.t('USER_NOT_EXISTS') : 'user don\'t exist');
@@ -70,6 +72,7 @@ const Users = mongoose.models.Users
     'Users',
     UsersSchema,
   );
+
 
 module.exports = Users;
 

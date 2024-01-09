@@ -4,7 +4,8 @@ const fs = require('fs');
 const { logger } = require('../logger');
 const sharp = require('sharp');
 const path = require('path');
-const { SLIDER } = require('../config');
+const { SLIDER, NODE_ENV } = require('../config');
+const nodemailer = require('nodemailer');
 
 const handlers = {
   normalizePort(val) {
@@ -138,6 +139,52 @@ const handlers = {
   },
   createFile(folderPath, contents) {
     fs.writeFileSync(folderPath, contents || '');
+  },
+  async sendMail({ email, html, subject, body, from = 'Ynafs' }) {
+    let config = {
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // use SSL
+      auth: {
+        user: process.env.GMAIL,
+        pass: process.env.GMAILKEY,
+      },
+      tls: {
+        // do not fail on invalid certs
+        rejectUnauthorized: false,
+      },
+    };
+
+    if (NODE_ENV === 'development') {
+      // all emails are catched by ethereal.email
+      config = {
+        host: 'smtp.ethereal.email',
+        port: 587,
+        auth: {
+          user: 'jeramy.hettinger@ethereal.email',
+          pass: 'qkyaXcu2TcCx5V3S7x',
+        },
+      };
+    }
+
+    const transporter = nodemailer.createTransport(config);
+    try {
+      const info = await transporter.sendMail({
+        // from: process.env.GMAIL_USER, // list of receivers
+        from,
+        to: email, // sender address
+        subject: subject ? subject : '', // Subject line
+        text: body ? body : '', // plain text body
+        html: html ? html : '', // html body
+      });
+
+      console.log('Message sent: %s', info.messageId);
+
+      return 'message sent check your email';
+    } catch (err) {
+      logger.error(err);
+      return err.message;
+    }
   },
 };
 
