@@ -17,9 +17,6 @@ const RSAPUBLIC_PATH = NODE_ENV === 'render'
   ? '/etc/secrets/publicKey.pem'
   : path.join(__dirname, '../keys/pem/publicKey.pem');
 
-console.log([NODE_ENV], '.............. NODE_ENV ...............');
-console.log(RSASECRET_PATH, RSAPUBLIC_PATH);
-
 const config = {
   APP_NAME: 'mobilestore',
   NODE_ENV: NODE_ENV || 'development',
