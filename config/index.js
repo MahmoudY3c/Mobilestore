@@ -9,7 +9,16 @@ const {
   CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_URL,
 } = process.env;
 
+const RSASECRET_PATH = NODE_ENV === 'render'
+  ? '/etc/secrets/privateKey.pem'
+  : path.jon(__dirname, '../keys/pem/privateKey.pem');
+
+const RSAPUBLIC_PATH = NODE_ENV === 'render'
+  ? '/etc/secrets/privateKey.pem'
+  : path.jon(__dirname, '../keys/pem/privateKey.pem');
+
 console.log([NODE_ENV], '.............. NODE_ENV ...............');
+console.log(RSASECRET_PATH, RSAPUBLIC_PATH);
 
 const config = {
   APP_NAME: 'mobilestore',
@@ -46,13 +55,13 @@ const config = {
   RSASECRET: fs.readFileSync(
     NODE_ENV === 'render'
       ? '/etc/secrets/privateKey.pem'
-      : path.resolve(__dirname, '../keys/pem/privateKey.pem'),
+      : path.jon(__dirname, '../keys/pem/privateKey.pem'),
     'utf-8',
   ),
   RSAPUBLIC: fs.readFileSync(
     NODE_ENV === 'render'
       ? '/etc/secrets/publicKey.pem'
-      : path.resolve(__dirname, '../keys/pem/publicKey.pem'),
+      : path.jon(__dirname, '../keys/pem/publicKey.pem'),
     'utf-8',
   ),
 };
