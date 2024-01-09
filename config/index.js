@@ -44,19 +44,15 @@ const config = {
     expairs: '5h',
   },
   RSASECRET: fs.readFileSync(
-    path.resolve(__dirname,
-      NODE_ENV === 'render'
-        ? '/etc/secrets/privateKey.pem'
-        : '../keys/pem/privateKey.pem',
-    ),
+    NODE_ENV === 'render'
+      ? '/etc/secrets/privateKey.pem'
+      : path.resolve(__dirname, '../keys/pem/privateKey.pem'),
     'utf-8',
   ),
   RSAPUBLIC: fs.readFileSync(
-    path.resolve(__dirname,
-      NODE_ENV === 'render'
-        ? '/etc/secrets/publicKey.pem'
-        : '../keys/pem/publicKey.pem',
-    ),
+    NODE_ENV === 'render'
+      ? '/etc/secrets/publicKey.pem'
+      : path.resolve(__dirname, '../keys/pem/publicKey.pem'),
     'utf-8',
   ),
 };
