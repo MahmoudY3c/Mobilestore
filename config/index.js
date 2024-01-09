@@ -9,6 +9,8 @@ const {
   CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_URL,
 } = process.env;
 
+console.log([NODE_ENV], '.............. NODE_ENV ...............');
+
 const config = {
   APP_NAME: 'mobilestore',
   NODE_ENV: NODE_ENV || 'development',
