@@ -15,7 +15,8 @@
     "api:create": "node scripts/createApiFromControllers",
     "api:crud": "node scripts/crud-api-links",
     "db:schema": "node scripts/crud-api-links",
-    "updateKeys": "node keys/generateKeys.js"
+    "updateKeys": "node keys/generateKeys.js",
+    "push": "git add . && git commit -m \"a dummy commit for fix simple somethings related render\" && git push"
   },
   "dependencies": {
     "axios": "^1.6.3",

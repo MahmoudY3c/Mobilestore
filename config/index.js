@@ -11,11 +11,11 @@ const {
 
 const RSASECRET_PATH = NODE_ENV === 'render'
   ? '/etc/secrets/privateKey.pem'
-  : path.jon(__dirname, '../keys/pem/privateKey.pem');
+  : path.join(__dirname, '../keys/pem/privateKey.pem');
 
 const RSAPUBLIC_PATH = NODE_ENV === 'render'
   ? '/etc/secrets/privateKey.pem'
-  : path.jon(__dirname, '../keys/pem/privateKey.pem');
+  : path.join(__dirname, '../keys/pem/privateKey.pem');
 
 console.log([NODE_ENV], '.............. NODE_ENV ...............');
 console.log(RSASECRET_PATH, RSAPUBLIC_PATH);
