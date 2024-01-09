@@ -16,7 +16,7 @@
     "api:crud": "node scripts/crud-api-links",
     "db:schema": "node scripts/crud-api-links",
     "updateKeys": "node keys/generateKeys.js",
-    "push": "git add . && git commit -m \"a dummy commit for fix simple somethings related render\" && git push"
+    "push": "git add . && git commit -m \"a dummy commit for fix simple issues related to render - %date% %time%\" && git push"
   },
   "dependencies": {
     "axios": "^1.6.3",

@@ -14,8 +14,8 @@ const RSASECRET_PATH = NODE_ENV === 'render'
   : path.join(__dirname, '../keys/pem/privateKey.pem');
 
 const RSAPUBLIC_PATH = NODE_ENV === 'render'
-  ? '/etc/secrets/privateKey.pem'
-  : path.join(__dirname, '../keys/pem/privateKey.pem');
+  ? '/etc/secrets/publicKey.pem'
+  : path.join(__dirname, '../keys/pem/publicKey.pem');
 
 console.log([NODE_ENV], '.............. NODE_ENV ...............');
 console.log(RSASECRET_PATH, RSAPUBLIC_PATH);
@@ -52,18 +52,8 @@ const config = {
     refresh: '7d',
     expairs: '5h',
   },
-  RSASECRET: fs.readFileSync(
-    NODE_ENV === 'render'
-      ? '/etc/secrets/privateKey.pem'
-      : path.jon(__dirname, '../keys/pem/privateKey.pem'),
-    'utf-8',
-  ),
-  RSAPUBLIC: fs.readFileSync(
-    NODE_ENV === 'render'
-      ? '/etc/secrets/publicKey.pem'
-      : path.jon(__dirname, '../keys/pem/publicKey.pem'),
-    'utf-8',
-  ),
+  RSASECRET: fs.readFileSync(RSASECRET_PATH),
+  RSAPUBLIC: fs.readFileSync(RSAPUBLIC_PATH),
 };
 
 module.exports = { ...config };
