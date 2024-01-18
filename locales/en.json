@@ -21,5 +21,6 @@
   "INVALID_FIELD": "Invalid '{{field}}' description",
   "INVALID_ID": "Sorry send id '{{id}}' is not valid id",
   "CATEGORY_EXISTS": "category already exists",
-  "INVALID_BRAND_NAME": "Invalid brand name"
+  "INVALID_BRAND_NAME": "Invalid brand name",
+  "LOGOUT": "Logged out successfully"
 }
