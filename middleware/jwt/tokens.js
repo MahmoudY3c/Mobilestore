@@ -7,17 +7,10 @@ const UsersTokens = require('../../db/models/UsersTokens');
 const signToken = (payload, expiresIn = TokensConfig.expairs, Bearer) => `${Bearer || ''}${jwt.sign(payload, RSASECRET, { algorithm: 'RS256', expiresIn })}`;
 
 const updateToken = async (user, token, refreshToken) => {
-  // remove Breaer\s
-  token = token.split(' ')[1];
-
   const data = {
     userId: user._id, token,
+    refresh: refreshToken,
   };
-
-  if (refreshToken) {
-    refreshToken = refreshToken.split(' ')[1];
-    data.refresh = refreshToken;
-  }
 
   // check if the user already has a refresh token and update it
   const UserToken = await UsersTokens.findOne({ userId: user._id });

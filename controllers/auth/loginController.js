@@ -25,7 +25,7 @@ const loginValidationSchema = checkSchema(_loginPayload);
 
 const loginController = asyncHandler(async (req, res) => {
   const { phoneNumber, password } = extractRequiredFields(Object.keys(_loginPayload), req.body);
-  const user = await Users.findByCredentials({ phoneNumber, password });
+  const user = await Users.findByCredentials({ phoneNumber, password, req });
   const payload = user.toJSON();
   // make the refresh time similar to the collection item exapirs time
   const refresh = signToken(payload, TokensConfig.refresh);

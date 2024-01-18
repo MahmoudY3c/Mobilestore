@@ -1,6 +1,6 @@
 const ResetToken = require('../../db/models/ResetToken');
 const { verifyHashToken } = require('../../handlers/encryption');
-const { logger } = require('../../logs');
+const { logger } = require('../../logger');
 const createHttpError = require('http-errors');
 
 
@@ -20,9 +20,10 @@ const validateResetPassword = async function (req, res, next) {
       // remove the token
       await ResetToken.deleteOne({ hash });
       res.status(200).json({ allowed: true });
-    } else {
-      next(createHttpError(403));
+      return next();
     }
+
+    return next(createHttpError(403));
   } catch (err) {
     logger.error(err);
   }
