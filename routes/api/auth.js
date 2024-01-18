@@ -13,7 +13,7 @@ router.post('/login', loginController);
 router.post('/logout', logoutController);
 router.post('/change-password', changePasswordController);
 router.post('/reset-password', resetPasswordController);
-router.get('/reset-password/:hash', validateResetPassword, changePasswordController);
+router.post('/reset-password/:hash', validateResetPassword, changePasswordController);
 router.get('/refresh', checkRefresh, refreshController);
 
 
