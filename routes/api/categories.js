@@ -8,9 +8,11 @@ const { sendCategories } = require('../../controllers/category/sendCategories.js
 const { sendCategoryById } = require('../../controllers/category/sendCategoryById.js');
 const { validateParamId } = require('../../middleware/validators/validateParams.js');
 const sendExpressValidatorErrors = require('../../middleware/sendExpressValidatorErrors.js');
+const { checkAuth } = require('../../middleware/jwt/checkAuth.js');
 
 router.post(
   '/',
+  checkAuth,
   createCategoryValidationSchema,
   sendExpressValidatorErrors,
   createCategory,
@@ -18,6 +20,7 @@ router.post(
 
 router.delete(
   '/:id',
+  checkAuth,
   validateParamId,
   sendExpressValidatorErrors,
   deleteCategory,
@@ -25,6 +28,7 @@ router.delete(
 
 router.put(
   '/:id',
+  checkAuth,
   validateParamId,
   editCategoryValidationSchema,
   sendExpressValidatorErrors,

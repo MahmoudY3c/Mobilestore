@@ -9,7 +9,7 @@ const routesPath = path.join(__dirname, '../routes/api'); // Replace with your r
 const baseUrl = '/api'; // Replace with your base URL
 const excludeFiles = [
   'index.js',
-  'auth.js',
+  // 'auth.js',
 ];
 
 function extractRoutes(dataDesigner) {

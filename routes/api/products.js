@@ -9,9 +9,11 @@ const { sendProducts } = require('../../controllers/products/sendProducts.js');
 const sendExpressValidatorErrors = require('../../middleware/sendExpressValidatorErrors.js');
 const { validateParamId } = require('../../middleware/validators/validateParams.js');
 const uploadFilesToCloudinary = require('../../middleware/uploadFilesToCloudinary.js');
+const { checkAuth } = require('../../middleware/jwt/checkAuth.js');
 
 router.post(
   '/',
+  checkAuth,
   productUpload,
   createProductValidationSchema,
   sendExpressValidatorErrors,
@@ -21,6 +23,7 @@ router.post(
 
 router.delete(
   '/:id',
+  checkAuth,
   validateParamId,
   sendExpressValidatorErrors,
   deleteProduct,
@@ -28,6 +31,7 @@ router.delete(
 
 router.put(
   '/:id',
+  checkAuth,
   productUpload,
   validateParamId,
   editProductValidationSchema,
