@@ -7,7 +7,7 @@ const { catchAndForwardError, staticHTMLErrorHandler } = require('./handlers/err
 const i18next = require('./locales');
 const i18nextMiddleware = require('i18next-http-middleware');
 const cors = require('cors');
-const { NODE_ENV } = require('./config');
+const { NODE_ENV, devEnvs } = require('./config');
 const { cloudinary } = require('./cloudinary');
 
 const app = express();
@@ -17,10 +17,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(cors({
-  origin: ['development', 'render'].includes(NODE_ENV),
-  credentials: ['development', 'render'].includes(NODE_ENV),
-  preflightContinue: ['development', 'render'].includes(NODE_ENV),
-  optionsSuccessStatus: 200,
+  origin: devEnvs.includes(NODE_ENV),
+  credentials: devEnvs.includes(NODE_ENV),
+  preflightContinue: devEnvs.includes(NODE_ENV),
+  // optionsSuccessStatus: 200,
 }));
 
 console.log(cloudinary.url('uploads'));

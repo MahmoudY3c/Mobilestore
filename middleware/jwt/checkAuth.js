@@ -2,11 +2,15 @@
 const jwt = require('jsonwebtoken');
 const UsersTokens = require('../../db/models/UsersTokens');
 const createHttpError = require('http-errors');
-const { RSAPUBLIC } = require('../../config');
+const { RSAPUBLIC, NODE_ENV, devEnvs } = require('../../config');
 const { asyncHandler } = require('../../handlers/error');
 
 const checkAuth = asyncHandler(async (req, res, next) => {
   const authHeader = req.headers.authorization;
+
+  if (devEnvs.includes(NODE_ENV) && req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
 
   // remove Bearer\s
   const token = authHeader && authHeader.split(' ')[1];

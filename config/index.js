@@ -51,6 +51,7 @@ const config = {
   },
   RSASECRET: fs.readFileSync(RSASECRET_PATH),
   RSAPUBLIC: fs.readFileSync(RSAPUBLIC_PATH),
+  devEnvs: ['test', 'render', 'development'],
 };
 
 module.exports = { ...config };
