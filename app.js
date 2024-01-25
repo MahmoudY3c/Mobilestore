@@ -20,6 +20,7 @@ app.use(cors({
   origin: ['development', 'render'].includes(NODE_ENV),
   credentials: ['development', 'render'].includes(NODE_ENV),
   preflightContinue: ['development', 'render'].includes(NODE_ENV),
+  optionsSuccessStatus: 200,
 }));
 
 console.log(cloudinary.url('uploads'));

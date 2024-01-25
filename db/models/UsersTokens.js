@@ -6,6 +6,7 @@ const UsersTokensSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, required: true, ref: 'Users' },
   token: { type: String, required: true },
   refresh: { type: String },
+  payload: { type: Object },
   createdAt: { type: Date, default: Date.now, expires: TokensConfig.refreshMs },
 }, { timestamps: true });
 
