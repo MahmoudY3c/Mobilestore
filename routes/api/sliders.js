@@ -10,6 +10,7 @@ const { sendSliderById } = require('../../controllers/sliders/sendSliderById');
 const uploadFilesToCloudinary = require('../../middleware/uploadFilesToCloudinary');
 const resizeSliderImageAsBuffer = require('../../middleware/resizeSliderImageAsBuffer');
 const { checkAuth } = require('../../middleware/jwt/checkAuth');
+const checkRole = require('../../middleware/jwt/checkRole');
 // const checkRole = require('../../middleware/jwt/checkRole');
 const router = express.Router();
 
@@ -32,6 +33,7 @@ router.get('/:id',
 
 router.put('/:id',
   checkAuth,
+  checkRole('admin'),
   sliderUpload,
   validateImages(true),
   validateParamId,
@@ -46,6 +48,7 @@ router.put('/:id',
 router.delete('/:id',
   // checkRole('admin'),
   checkAuth,
+  checkRole('admin'),
   validateParamId,
   sendExpressValidatorErrors,
   deleteSlider,
@@ -54,6 +57,7 @@ router.delete('/:id',
 router.post('/',
   // checkRole('admin'),
   checkAuth,
+  checkRole('admin'),
   sliderUpload,
   validateImages(),
   createSliderValidationSchema,

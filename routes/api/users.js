@@ -6,7 +6,7 @@ const { sendUserById } = require('../../controllers/users/sendUserById');
 const { editUserValidationSchema, editUser } = require('../../controllers/users/editUser');
 const { validateParamId } = require('../../middleware/validators/validateParams');
 const { deleteUser } = require('../../controllers/users/deleteUser');
-// const checkRole = require('../../middleware/jwt/checkRole');
+const checkRole = require('../../middleware/jwt/checkRole');
 const router = express.Router();
 
 /* GET users listing. */
@@ -23,7 +23,7 @@ router.get('/:id',
 );
 
 router.put('/:id',
-  // checkRole('admin'),
+  checkRole('admin'),
   validateParamId,
   editUserValidationSchema,
   sendExpressValidatorErrors,
@@ -32,14 +32,14 @@ router.put('/:id',
 
 
 router.delete('/:id',
-  // checkRole('admin'),
+  checkRole('admin'),
   validateParamId,
   sendExpressValidatorErrors,
   deleteUser,
 );
 
 router.post('/',
-  // checkRole('admin'),
+  checkRole('admin'),
   createUserValidationSchema,
   sendExpressValidatorErrors,
   createUser,

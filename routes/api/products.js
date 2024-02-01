@@ -10,10 +10,12 @@ const sendExpressValidatorErrors = require('../../middleware/sendExpressValidato
 const { validateParamId } = require('../../middleware/validators/validateParams.js');
 const uploadFilesToCloudinary = require('../../middleware/uploadFilesToCloudinary.js');
 const { checkAuth } = require('../../middleware/jwt/checkAuth.js');
+const checkRole = require('../../middleware/jwt/checkRole.js');
 
 router.post(
   '/',
   checkAuth,
+  checkRole('admin'),
   productUpload,
   createProductValidationSchema,
   sendExpressValidatorErrors,
@@ -24,6 +26,7 @@ router.post(
 router.delete(
   '/:id',
   checkAuth,
+  checkRole('admin'),
   validateParamId,
   sendExpressValidatorErrors,
   deleteProduct,
@@ -32,6 +35,7 @@ router.delete(
 router.put(
   '/:id',
   checkAuth,
+  checkRole('admin'),
   productUpload,
   validateParamId,
   editProductValidationSchema,

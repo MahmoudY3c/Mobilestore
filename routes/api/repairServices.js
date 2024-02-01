@@ -8,9 +8,11 @@ const { sendRepairServices } = require('../../controllers/repairServices/sendRep
 const { sendRepairServicesById } = require('../../controllers/repairServices/sendRepairServicesById.js');
 const sendExpressValidatorErrors = require('../../middleware/sendExpressValidatorErrors.js');
 const { validateParamId, validateQueryUserId } = require('../../middleware/validators/validateParams.js');
+const checkRole = require('../../middleware/jwt/checkRole.js');
 
 router.post(
   '/',
+  checkRole('admin'),
   createRepairServicesValidationSchema,
   sendExpressValidatorErrors,
   createRepairServices,
@@ -18,6 +20,7 @@ router.post(
 
 router.delete(
   '/:id',
+  checkRole('admin'),
   validateParamId,
   sendExpressValidatorErrors,
   deleteRepairServices,
@@ -25,6 +28,7 @@ router.delete(
 
 router.put(
   '/:id',
+  checkRole('admin'),
   validateParamId,
   editRepairServicesValidationSchema,
   sendExpressValidatorErrors,

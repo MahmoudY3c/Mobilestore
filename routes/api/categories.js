@@ -9,10 +9,12 @@ const { sendCategoryById } = require('../../controllers/category/sendCategoryByI
 const { validateParamId } = require('../../middleware/validators/validateParams.js');
 const sendExpressValidatorErrors = require('../../middleware/sendExpressValidatorErrors.js');
 const { checkAuth } = require('../../middleware/jwt/checkAuth.js');
+const checkRole = require('../../middleware/jwt/checkRole.js');
 
 router.post(
   '/',
   checkAuth,
+  checkRole('admin'),
   createCategoryValidationSchema,
   sendExpressValidatorErrors,
   createCategory,
@@ -21,6 +23,7 @@ router.post(
 router.delete(
   '/:id',
   checkAuth,
+  checkRole('admin'),
   validateParamId,
   sendExpressValidatorErrors,
   deleteCategory,
@@ -29,6 +32,7 @@ router.delete(
 router.put(
   '/:id',
   checkAuth,
+  checkRole('admin'),
   validateParamId,
   editCategoryValidationSchema,
   sendExpressValidatorErrors,
