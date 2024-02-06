@@ -16,7 +16,7 @@ const sendProducts = asyncHandler(async (req, res) => {
       },
     };
 
-    const products = await Products.find(search);
+    const products = await Products.find(search, {}, { skip: Number(skip), limit: Number(limit) });
     const numberOfProducts = await Products.countDocuments(search);
     return res.status(200).json({ data: products, length: numberOfProducts });
   }
