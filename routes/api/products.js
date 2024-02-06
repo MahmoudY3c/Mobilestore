@@ -15,7 +15,7 @@ const checkRole = require('../../middleware/jwt/checkRole.js');
 router.post(
   '/',
   checkAuth,
-  checkRole('admin'),
+  checkRole('admin'), // How Can it be Used
   productUpload,
   createProductValidationSchema,
   sendExpressValidatorErrors,

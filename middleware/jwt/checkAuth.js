@@ -6,6 +6,10 @@ const { RSAPUBLIC, NODE_ENV, devEnvs } = require('../../config');
 const { asyncHandler } = require('../../handlers/error');
 
 const checkAuth = asyncHandler(async (req, res, next) => {
+  if(NODE_ENV === 'development') {
+    return next();
+  }
+  
   const authHeader = req.headers.authorization;
 
   if (devEnvs.includes(NODE_ENV) && req.method === 'OPTIONS') {
