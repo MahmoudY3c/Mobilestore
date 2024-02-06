@@ -39,7 +39,7 @@ const loginController = asyncHandler(async (req, res) => {
     httpOnly: true,
     maxAge: TokensConfig.refreshMs,
     secure: true,
-    sameSite: 'None',
+    sameSite: 'none',
   })
     .status(200)
     .json({
