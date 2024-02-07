@@ -1,30 +1,29 @@
-const UsersToken = require('../../db/models/UsersTokens');
+const UsersTokens = require('../../db/models/UsersTokens');
 const createHttpError = require('http-errors');
-const { logger } = require('../../logger');
+const { asyncHandler } = require('../../handlers/error');
 
-const logoutController = async (req, res, next) => {
-  try {
-    let { refresh } = req.cookies;
-    refresh = refresh && refresh?.split(' ')[1];
-    if (refresh) {
-      // check if the refresh token is exist
-      const token = await UsersToken.findOne({ refresh });
-      if (!token) return next(createHttpError(403));
+const logoutController = asyncHandler(async (req, res, next) => {
+  let { refresh } = req.cookies;
+  refresh = refresh && refresh?.split(' ')?.[1];
 
-      res.clearCookie('refresh');
+  if (refresh) {
+    // check if the refresh token is exist
+    const token = await UsersTokens.findOne({ refresh });
+    if (!token) return next(createHttpError(403));
 
-      // remove the refresh token
-      await UsersToken.deleteOne({ refresh });
+    // remove the refresh token
+    await UsersTokens.deleteOne({ refresh });
 
-      res.status(200).json({ message: req.t('LOGOUT') });
-    } else {
-      next(createHttpError(403));
-    }
-  } catch (err) {
-    logger.error(err);
-    err.status = 400;
-    next(err);
+    res.status(200).json({ message: req.t('LOGOUT') });
+  } else {
+    const authHeader = req.headers.authorization;
+    // remove Bearer\s
+    const token = authHeader && authHeader?.split(' ')?.[1];
+    // remove the refresh token
+    await UsersTokens.deleteOne({ token });
+
+    res.status(200).json({ message: req.t('LOGOUT') });
   }
-};
+});
 
 module.exports = logoutController;
