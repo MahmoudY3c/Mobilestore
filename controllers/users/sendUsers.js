@@ -4,18 +4,17 @@ const { asyncHandler } = require('../../handlers/error');
 const sendUsers = asyncHandler(async (req, res) => {
   const { role, q, skip = 0, limit = 14 } = req.query;
   if (q) {
-    const query = { q };
     // handling search
     const search = {
       $or: [
         {
           userName: {
-            $regex: new RegExp(query, 'gi'),
+            $regex: new RegExp(q, 'gi'),
           },
         },
         {
           phoneNumber: {
-            $regex: new RegExp(query, 'gi'),
+            $regex: new RegExp(q, 'gi'),
           },
         },
       ],
