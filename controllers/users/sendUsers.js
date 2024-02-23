@@ -8,8 +8,16 @@ const sendUsers = asyncHandler(async (req, res) => {
     // handling search
     const search = {
       $or: [
-        { userName: { $regex: new RegExp(query, 'gi') } },
-        { phoneNumber: { $regex: new RegExp(query, 'gi') } },
+        {
+          userName: {
+            $regex: new RegExp(query, 'gi'),
+          },
+        },
+        {
+          phoneNumber: {
+            $regex: new RegExp(query, 'gi'),
+          },
+        },
       ],
     };
 
