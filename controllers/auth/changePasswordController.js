@@ -42,7 +42,7 @@ const changePasswordController = async function (req, res) {
     res.status(200).json({ success: true });
   } catch (err) {
     logger.error(err);
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ error: { message: err.message } });
   }
 };
 

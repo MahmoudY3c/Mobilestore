@@ -20,7 +20,7 @@ const editSlider = asyncHandler(async (req, res) => {
   }
 
   if (!Object.keys(sliderData).length) {
-    return res.status(400).json({ error: req.t('EMPTY_PAYLOAD') });
+    return res.status(400).json({ error: { message: req.t('EMPTY_PAYLOAD') } });
   }
 
   // console.log(sliderData);

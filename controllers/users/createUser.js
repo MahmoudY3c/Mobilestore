@@ -52,7 +52,7 @@ const createUser = asyncHandler(async (req, res) => {
   // check if user exists
   const checkPhoneNumber = await Users.findOne({ phoneNumber: userPayload.phoneNumber });
   if (checkPhoneNumber) {
-    return res.status(400).json({ error: req.t('PHONE_NUMBER_EXISTS') });
+    return res.status(400).json({ error: { message: req.t('PHONE_NUMBER_EXISTS') } });
   }
 
   const user = new Users(userPayload);

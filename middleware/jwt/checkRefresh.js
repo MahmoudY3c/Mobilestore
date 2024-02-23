@@ -27,7 +27,7 @@ const checkRefresh = asyncHandler(async (req, res, next) => {
     });
   } catch (err) {
     logger.error(err);
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ error: { message: err.message } });
   }
 });
 

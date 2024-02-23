@@ -14,7 +14,7 @@ const editRepairServices = asyncHandler(async (req, res) => {
   const RepairServicesData = extractRequiredFields(Object.keys(editRepairServicesPayload), req.body);
 
   if (!Object.keys(RepairServicesData).length) {
-    return res.status(400).json({ error: req.t('EMPTY_PAYLOAD') });
+    return res.status(400).json({ error: { message: req.t('EMPTY_PAYLOAD') } });
   }
 
   // console.log(RepairServicesData);

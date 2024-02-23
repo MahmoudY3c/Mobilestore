@@ -9,7 +9,7 @@ const validateResetPassword = async function (req, res, next) {
     const { hash } = req.params;
     // check if the hash isn't expaired and delete it
     const verifyHash = await ResetToken.findOne({ hash });
-    if (!verifyHash) return res.status(410).json({ error: 'invalid token' });
+    if (!verifyHash) return res.status(410).json({ error: { message: 'invalid token' } });
     // get the user data
     await verifyHash.populate('userId');
 
@@ -25,6 +25,7 @@ const validateResetPassword = async function (req, res, next) {
 
     return next(createHttpError(403));
   } catch (err) {
+    res.status(400).json({ error: { message: err.message } });
     logger.error(err);
   }
 };

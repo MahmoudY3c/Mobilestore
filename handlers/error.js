@@ -22,7 +22,7 @@ const JSONErrorHandler = function (err, req, res, next) {
   const error = NODE_ENV === 'development' ? err : { error: err.message };
   const status = err.status || 500;
   // render the error page
-  res.status(status).json({ error: err.message });
+  res.status(status).json({ error: { message: err.message } });
 };
 
 const asyncErrorHandler = function (err, req, res, next) {

@@ -7,7 +7,7 @@ function sendExpressValidatorErrors(req, res, next) {
     return res.status(400).json({
       error: {
         errors: result.array(),
-        message: result.array()[0].msg,
+        message: result.array().join(' \n'),
       },
     });
   }
