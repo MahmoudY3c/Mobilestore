@@ -5,6 +5,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development nodemon index.js",
     "render": "cross-env NODE_ENV=render nodemon index.js",
+    "production": "cross-env NODE_ENV=production nodemon index.js",
     "ts": "tsc -w",
     "prod": "pm2 start ecosystem.config.js",
     "prod:stop": "pm2 stop ecosystem.config.js",

@@ -21,6 +21,11 @@ const handlers = {
 
     return false;
   },
+  delay(ms) {
+    return new Promise(res => {
+      setTimeout(res, ms);
+    });
+  },
   customizeErr(message, status) {
     const err = new Error();
     err.message = message;
