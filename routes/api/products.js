@@ -11,6 +11,7 @@ const { validateParamId } = require('../../middleware/validators/validateParams.
 const uploadFilesToCloudinary = require('../../middleware/uploadFilesToCloudinary.js');
 const { checkAuth } = require('../../middleware/jwt/checkAuth.js');
 const checkRole = require('../../middleware/jwt/checkRole.js');
+const { findProductByName } = require('../../controllers/products/findProductByName.js');
 
 router.post(
   '/',
@@ -53,6 +54,7 @@ router.get(
 
 router.get(
   '/',
+  findProductByName,
   sendProducts,
 );
 

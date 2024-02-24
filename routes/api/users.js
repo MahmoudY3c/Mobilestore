@@ -7,12 +7,14 @@ const { editUserValidationSchema, editUser } = require('../../controllers/users/
 const { validateParamId } = require('../../middleware/validators/validateParams');
 const { deleteUser } = require('../../controllers/users/deleteUser');
 const checkRole = require('../../middleware/jwt/checkRole');
+const { findUser } = require('../../controllers/users/findUser');
 // const { checkAuth } = require('../../middleware/jwt/checkAuth');
 const router = express.Router();
 
 /* GET users listing. */
 router.get('/',
   // checkRole('admin'),
+  findUser,
   sendUsers,
 );
 
