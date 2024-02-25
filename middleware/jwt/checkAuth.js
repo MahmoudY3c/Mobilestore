@@ -4,12 +4,24 @@ const UsersTokens = require('../../db/models/UsersTokens');
 const createHttpError = require('http-errors');
 const { RSAPUBLIC, NODE_ENV, devEnvs } = require('../../config');
 const { asyncHandler } = require('../../handlers/error');
+const { parseJwt, validateMongoId } = require('../../handlers');
 
 const checkAuth = asyncHandler(async (req, res, next) => {
-  if(NODE_ENV === 'development') {
+  if (NODE_ENV === 'development') {
+    // return next();
+    // find any logged in user and use him as developer user
+    const devUser = await UsersTokens.findOne(
+      (req.body.userId && validateMongoId(req.body.userId))
+        ? { userId: req.body.userId }
+        : {},
+    );
+
+    if (!devUser) throw new Error(req.t('USER_NOT_EXISTS'));
+
+    req.payload = parseJwt(devUser.token);
     return next();
   }
-  
+
   const authHeader = req.headers.authorization;
 
   if (devEnvs.includes(NODE_ENV) && req.method === 'OPTIONS') {

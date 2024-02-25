@@ -31,6 +31,7 @@ const config = {
   CLOUDINARY_API_SECRET,
   CLOUDINARY_URL,
   ROLES: ['customer', 'admin'],
+  ROLESNAMES: { customer: 'customer', admin: 'admin' },
   IMAGE_TYPES: ['JPEG', 'PNG', 'WEBP', 'GIF', 'AVIF', 'TIFF'],
   SLIDER: {
     height: 200,

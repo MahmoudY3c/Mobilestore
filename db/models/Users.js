@@ -21,6 +21,10 @@ const UsersSchema = new Schema({
     type: String,
     enum: ROLES,
   },
+  online: {
+    type: Boolean,
+    enum: false,
+  },
   services: [
     {
       type: mongoose.Types.ObjectId,

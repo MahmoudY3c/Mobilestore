@@ -5,6 +5,7 @@ const usersRouter = require('./users');
 const slidersRouter = require('./sliders');
 const categoriesRouter = require('./categories');
 const productsRouter = require('./products');
+const messagesRouter = require('./messages');
 const repairServicesRouter = require('./repairServices');
 const { JSONErrorHandler, asyncErrorHandler } = require('../../handlers/error');
 const { checkAuth } = require('../../middleware/jwt/checkAuth');
@@ -16,6 +17,7 @@ router.use('/users', checkAuth, usersRouter);
 router.use('/sliders', slidersRouter);
 router.use('/categories', categoriesRouter);
 router.use('/products', productsRouter);
+router.use('/messages', checkAuth, messagesRouter);
 router.use('/repair-services', checkAuth, repairServicesRouter);
 
 router.use(asyncErrorHandler);

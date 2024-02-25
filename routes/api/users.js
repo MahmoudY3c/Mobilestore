@@ -8,6 +8,8 @@ const { validateParamId } = require('../../middleware/validators/validateParams'
 const { deleteUser } = require('../../controllers/users/deleteUser');
 const checkRole = require('../../middleware/jwt/checkRole');
 const { findUser } = require('../../controllers/users/findUser');
+const { query } = require('express-validator');
+const { ROLES } = require('../../config');
 // const { checkAuth } = require('../../middleware/jwt/checkAuth');
 const router = express.Router();
 
@@ -15,6 +17,8 @@ const router = express.Router();
 router.get('/',
   // checkRole('admin'),
   findUser,
+  query('role').isIn(ROLES).withMessage((value, { req }) => req.t('INVALID_ROLE', { value })),
+  sendExpressValidatorErrors,
   sendUsers,
 );
 

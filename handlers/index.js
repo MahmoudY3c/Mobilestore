@@ -6,6 +6,7 @@ const sharp = require('sharp');
 const path = require('path');
 const { SLIDER, NODE_ENV } = require('../config');
 const nodemailer = require('nodemailer');
+const { default: mongoose } = require('mongoose');
 
 const handlers = {
   normalizePort(val) {
@@ -20,6 +21,16 @@ const handlers = {
     }
 
     return false;
+  },
+  isDev: () => NODE_ENV === 'development',
+  parseJwt: token => JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString()),
+  validateMongoId(id, req) {
+    const isValidId = mongoose.Types.ObjectId.isValid(id);
+    if (req && !isValidId) {
+      throw new Error(req.t('INVALID_ID'));
+    }
+
+    return isValidId;
   },
   delay(ms) {
     return new Promise(res => {
