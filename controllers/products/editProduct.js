@@ -1,5 +1,5 @@
 const { checkSchema } = require('express-validator');
-const { asyncHandler } = require('../../handlers/error');
+const { asyncHandler, ErrorMessages } = require('../../handlers/error');
 const { extractRequiredFields } = require('../../handlers');
 const Products = require('../../db/models/Products');
 const ProductDetails = require('../../db/models/ProductDetails');
@@ -32,7 +32,7 @@ const editProduct = asyncHandler(async (req, res) => {
     });
 
     if (!productDetails) {
-      return res.status(404).json({ message: req.t('NOT_FOUND', { field: 'productDetails' }) });
+      return res.status(404).json(ErrorMessages.NOT_FOUND(req, 'productDetails'));
     }
   }
 
@@ -48,7 +48,7 @@ const editProduct = asyncHandler(async (req, res) => {
   }
 
   if (!Product) {
-    return res.status(404).json({ message: req.t('NOT_FOUND', { field: 'Product' }) });
+    return res.status(404).json(ErrorMessages.NOT_FOUND(req, 'Product'));
   }
 
   res.status(200).json({ success: true });

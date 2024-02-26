@@ -1,5 +1,5 @@
 const { checkSchema } = require('express-validator');
-const { asyncHandler } = require('../../handlers/error');
+const { asyncHandler, ErrorMessages } = require('../../handlers/error');
 const RepairServices = require('../../db/models/RepairServices');
 const { SERVICE } = require('../../config');
 const { extractRequiredFields } = require('../../handlers');
@@ -68,7 +68,7 @@ const createRepairServices = asyncHandler(async (req, res) => {
   });
 
   if (!user) {
-    return res.status(404).json({ message: req.t('NOT_FOUND', { field: 'user' }) });
+    return res.status(404).json(ErrorMessages.NOT_FOUND(req, 'user'));
   }
 
   console.log(user, repairServicesPayload);

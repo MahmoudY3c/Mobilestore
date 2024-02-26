@@ -1,5 +1,5 @@
 const { checkSchema } = require('express-validator');
-const { asyncHandler } = require('../../handlers/error');
+const { asyncHandler, ErrorMessages } = require('../../handlers/error');
 const { extractRequiredFields } = require('../../handlers');
 const Categories = require('../../db/models/Categories');
 const { categoriesPayload } = require('./createCategory');
@@ -14,7 +14,7 @@ const editCategory = asyncHandler(async (req, res) => {
   const categoryData = extractRequiredFields(Object.keys(editCategoryPayload), req.body);
   const category = await Categories.findByIdAndUpdate(id, categoryData);
   if (!category) {
-    return res.status(404).json({ message: req.t('NOT_FOUND', { field: 'Category' }) });
+    return res.status(404).json(ErrorMessages.NOT_FOUND(req, 'Category'));
   }
 
   res.status(200).json({ success: true });

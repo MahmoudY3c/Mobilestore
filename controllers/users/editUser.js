@@ -1,6 +1,6 @@
 const { checkSchema } = require('express-validator');
 const { usersPayload } = require('./createUser');
-const { asyncHandler } = require('../../handlers/error');
+const { asyncHandler, ErrorMessages } = require('../../handlers/error');
 const { extractRequiredFields } = require('../../handlers');
 const Users = require('../../db/models/Users');
 
@@ -13,7 +13,7 @@ const editUser = asyncHandler(async (req, res) => {
   const userData = extractRequiredFields(Object.keys(editUserPayload), req.body);
   const user = await Users.findByIdAndUpdate(id, userData);
   if (!user) {
-    return res.status(404).json({ message: req.t('NOT_FOUND', { field: 'user' }) });
+    return res.status(404).json(ErrorMessages.NOT_FOUND(req, 'user'));
   }
 
   res.status(200).json({ success: true });

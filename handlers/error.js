@@ -33,6 +33,10 @@ const asyncErrorHandler = function (err, req, res, next) {
   next(err);
 };
 
+const ErrorMessages = {
+  NOT_FOUND: (req, field) => ({ error: { message: req.t('NOT_FOUND', { field }) } }),
+};
+
 const asyncHandler = function (asyncFunction) {
   return async function (req, res, next) {
     const route = req.originalUrl;
@@ -58,4 +62,5 @@ module.exports = {
   JSONErrorHandler,
   asyncErrorHandler,
   asyncHandler,
+  ErrorMessages,
 };

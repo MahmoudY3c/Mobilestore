@@ -1,5 +1,5 @@
 const { checkSchema } = require('express-validator');
-const { asyncHandler } = require('../../handlers/error');
+const { asyncHandler, ErrorMessages } = require('../../handlers/error');
 const { extractRequiredFields } = require('../../handlers');
 const { messagesPayload } = require('./createMessage');
 const Messages = require('../../db/models/Messages');
@@ -14,7 +14,7 @@ const editMessage = asyncHandler(async (req, res) => {
   const messageData = extractRequiredFields(['message'], req.body);
   const message = await Messages.findByIdAndUpdate(id, messageData);
   if (!message) {
-    return res.status(404).json({ message: req.t('NOT_FOUND', { field: 'Message' }) });
+    return res.status(404).json(ErrorMessages.NOT_FOUND(req, 'Message'));
   }
 
   res.status(200).json(message);

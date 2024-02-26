@@ -1,4 +1,4 @@
-const { asyncHandler } = require('../../handlers/error');
+const { asyncHandler, ErrorMessages } = require('../../handlers/error');
 const Sliders = require('../../db/models/Sliders');
 // const fs = require('fs');
 // const path = require('path');
@@ -9,7 +9,7 @@ const deleteSlider = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const slider = await Sliders.findByIdAndDelete(id);
   if (!slider) {
-    return res.status(404).json({ message: req.t('NOT_FOUND', { field: id }) });
+    return res.status(404).json(ErrorMessages.NOT_FOUND(req, id));
   }
 
   try {

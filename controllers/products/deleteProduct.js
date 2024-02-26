@@ -1,4 +1,4 @@
-const { asyncHandler } = require('../../handlers/error');
+const { asyncHandler, ErrorMessages } = require('../../handlers/error');
 const Products = require('../../db/models/Products');
 const ProductDetails = require('../../db/models/ProductDetails');
 const { cleanupFiles } = require('../../cloudinary');
@@ -10,7 +10,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
   await ProductDetails.findOneAndDelete({ product: id });
 
   if (!product) {
-    return res.status(404).json({ message: req.t('NOT_FOUND', { field: id }) });
+    return res.status(404).json(ErrorMessages.NOT_FOUND(req, id));
   }
 
   try {

@@ -4,7 +4,6 @@ function sendExpressValidatorErrors(req, res, next) {
   //  validating the query
   const result = validationResult(req);
   if (result.isEmpty() === false) {
-    console.log(result);
     const errors = result.array();
 
     return res.status(400).json({

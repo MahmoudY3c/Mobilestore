@@ -1,4 +1,4 @@
-const { asyncHandler } = require('../../handlers/error');
+const { asyncHandler, ErrorMessages } = require('../../handlers/error');
 const RepairServices = require('../../db/models/RepairServices');
 const Users = require('../../db/models/Users');
 
@@ -7,7 +7,7 @@ const deleteRepairServices = asyncHandler(async (req, res) => {
   const repairServ = await RepairServices.findByIdAndDelete(id);
 
   if (!repairServ) {
-    return res.status(404).json({ message: req.t('NOT_FOUND', { field: id }) });
+    return res.status(404).json(ErrorMessages.NOT_FOUND(req, id));
   }
 
   await Users.findByIdAndUpdate(repairServ.userId.toString(), {

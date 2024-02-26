@@ -1,4 +1,4 @@
-const { asyncHandler } = require('../../handlers/error');
+const { asyncHandler, ErrorMessages } = require('../../handlers/error');
 const Sliders = require('../../db/models/Sliders');
 const { checkSchema } = require('express-validator');
 const { slidersPayload } = require('./createSlider');
@@ -30,7 +30,7 @@ const editSlider = asyncHandler(async (req, res) => {
   }
 
   if (!slider) {
-    return res.status(404).json({ message: req.t('NOT_FOUND', { field: 'slider' }) });
+    return res.status(404).json(ErrorMessages.NOT_FOUND(req, 'slider'));
   }
 
   res.status(200).json({ success: true });
