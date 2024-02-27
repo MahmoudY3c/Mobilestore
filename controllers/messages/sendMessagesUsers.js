@@ -1,25 +1,7 @@
 
 const { asyncHandler } = require('../../handlers/error');
 const { ROLESNAMES, ROLES } = require('../../config');
-const { checkSchema } = require('express-validator');
 const Users = require('../../db/models/Users');
-
-const sendMessagesUsersValidationSchema = checkSchema({
-  id: {
-    trim: true,
-    optional: true,
-    isMongoId: true,
-    errorMessage: (value, { req }) => req.t('INVALID_ID', { id: value }),
-  },
-  role: {
-    optional: true,
-    trim: true,
-    isIn: {
-      options: [ROLES],
-      errorMessage: (value, { req }) => req.t('INVALID_ROLE', { value }),
-    },
-  },
-}, ['query']);
 
 const sendMessagesUsers = asyncHandler(async (req, res) => {
   const { skip = 0, limit = 14/* , id: userId, role: requiredUsersRole */ } = req.query;
@@ -42,6 +24,7 @@ const sendMessagesUsers = asyncHandler(async (req, res) => {
         pipeline: [
           // { $match: { senderRole: { $ne: role } } }, // Filter by senderRole in messages
           { $project: { message: 1, seen: 1, createdAt: 1 } }, // Project only required message fields
+          { $sort: { createdAt: -1 } },
         ],
       },
     },
@@ -58,14 +41,15 @@ const sendMessagesUsers = asyncHandler(async (req, res) => {
         role: { $first: '$role' },
         message: { $last: '$messages.message' },
         timestamp: { $max: '$messages.createdAt' },
+        createdAt: { $max: '$createdAt' },
         unseen: {
           $sum: { $cond: [{ $eq: ['$messages.seen', false] }, 1, 0] },
         },
       },
     },
 
-    // Sort by latest message timestamp (descending)
-    { $sort: { timestamp: -1 } },
+    // sort by createdAt, timestamp to make the users sent messages at the top and use createdAt to make the users sortation is stable by making the users creation date at the top after timestamp
+    { $sort: { timestamp: -1, createdAt: -1 } },
 
     {
       $skip: Number(skip),
@@ -76,12 +60,11 @@ const sendMessagesUsers = asyncHandler(async (req, res) => {
   ];
 
   const usersData = await Users.aggregate(aggregation);
-  const numberOfUsers = await Users.countDocuments(aggregation);
+  const numberOfUsers = await Users.countDocuments({});
   res.status(200).json({ data: usersData, length: numberOfUsers });
 });
 
 module.exports = {
   sendMessagesUsers,
-  sendMessagesUsersValidationSchema,
 };
 

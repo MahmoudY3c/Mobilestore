@@ -1,5 +1,5 @@
 const express = require('express');
-const { sendMessagesUsers, sendMessagesUsersValidationSchema } = require('../../controllers/messages/sendMessagesUsers');
+const { sendMessagesUsers } = require('../../controllers/messages/sendMessagesUsers');
 const { sendMessages, sendMessageValidationSchema } = require('../../controllers/messages/sendMessages');
 const { createMessage, createMessageValidationSchema } = require('../../controllers/messages/createMessage');
 const { editMessage, editMessageValidationSchema } = require('../../controllers/messages/editMessage');
@@ -18,8 +18,6 @@ router.get(
 
 router.get(
   '/users',
-  sendMessagesUsersValidationSchema,
-  sendExpressValidatorErrors,
   sendMessagesUsers,
 );
 
