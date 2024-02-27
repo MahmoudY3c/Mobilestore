@@ -14,8 +14,16 @@ const messagesPayload = isOptional => ({
     trim: true,
     isString: true,
     escape: true,
-    optional: isOptional,
     errorMessage: (value, { req }) => req.t('INVALID_VALUE', { value }),
+    isLength: {
+      options: {
+        min: 1,
+      },
+      errorMessage: (value, { req }) => req.t('MIN_LENGTH', {
+        field: 'message',
+        length: 1,
+      }),
+    },
   },
 });
 

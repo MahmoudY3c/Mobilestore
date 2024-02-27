@@ -88,3 +88,4 @@ typings/
 .dynamodb/
 pem
 _trash
+aggregations.md

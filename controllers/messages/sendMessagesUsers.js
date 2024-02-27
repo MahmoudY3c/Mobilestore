@@ -1,12 +1,13 @@
 
 const { asyncHandler } = require('../../handlers/error');
 const { ROLESNAMES, ROLES } = require('../../config');
-const Users = require('../../db/models/Users');
 const { checkSchema } = require('express-validator');
+const Users = require('../../db/models/Users');
 
 const sendMessagesUsersValidationSchema = checkSchema({
   id: {
     trim: true,
+    optional: true,
     isMongoId: true,
     errorMessage: (value, { req }) => req.t('INVALID_ID', { id: value }),
   },
@@ -21,60 +22,51 @@ const sendMessagesUsersValidationSchema = checkSchema({
 }, ['query']);
 
 const sendMessagesUsers = asyncHandler(async (req, res) => {
-  const { skip = 0, limit = 14, id: userId, role: requiredUsersRole } = req.query;
-  const { _id: sender, role } = req.payload;
-  // that var is used to handle sending all receiver messages when the senderRole is admin
-  const senderRole = role === ROLESNAMES.admin ? ROLESNAMES.customer : ROLESNAMES.admin;
-  const query = { senderRole };
-  // select by sender id when senderRole is customer else select by receiver id when sender role is admin
-  if (role === ROLESNAMES.customer) {
-    query.sender = sender;
-  } else if (role === ROLESNAMES.admin) {
-    query.receiver = userId;
-  }
+  const { skip = 0, limit = 14/* , id: userId, role: requiredUsersRole */ } = req.query;
+  const { _id, role } = req.payload;
+  // search for all users roles when role is admin else customer search for admin users only
+  const requestedUsersRole = role === ROLESNAMES.admin ? { $in: ROLES } : ROLESNAMES.admin;
 
   const aggregation = [
-    {
-      $match: {
-        role: requiredUsersRole || { $in: ROLES },
-      },
-    },
+    // Match only where the user is in requested role + exclude the user sent the request
+    { $match: { role: requestedUsersRole, _id: { $ne: _id } } },
+
+    // Lookup messages, 'from' will be localField (user._id) and 'as' will be the output array field
     {
       $lookup: {
         from: 'messages',
         localField: '_id',
-        foreignField: 'receiver',
+        foreignField: 'receiver', // Assumes messages were sent to admins
         as: 'messages',
+        // select where role != user role
+        pipeline: [
+          // { $match: { senderRole: { $ne: role } } }, // Filter by senderRole in messages
+          { $project: { message: 1, seen: 1, createdAt: 1 } }, // Project only required message fields
+        ],
       },
     },
-    // {
-    //   $unwind: '$messages',
-    // },
+
+    // Unwind the messages array (to work with individual messages).
+    { $unwind: { path: '$messages', preserveNullAndEmptyArrays: true } },
+
+    // Group by user, carry forward the necessary fields
     {
-      $project: {
-        userName: 1,
-        phoneNumber: 1,
-        role: 1,
-        _id: 1,
-        // unSeenMessages: {
-        //   $sum: {
-        //     $cond: [
-        //       { $and: [{ $eq: ['$messages.receiver', '$_id'] }, { $eq: ['$messages.seen', false] }] }, // Check receiver ID and unread status
-        //       1,
-        //       0,
-        //     ],
-        //   },
-        // },
-        // latestMessageTimestamp: {
-        //   $max: '$messages.createdAt',
-        // },
+      $group: {
+        _id: '$_id',
+        userName: { $first: '$userName' },
+        phoneNumber: { $first: '$phoneNumber' },
+        role: { $first: '$role' },
+        message: { $last: '$messages.message' },
+        timestamp: { $max: '$messages.createdAt' },
+        unseen: {
+          $sum: { $cond: [{ $eq: ['$messages.seen', false] }, 1, 0] },
+        },
       },
     },
-    // {
-    //   $sort: {
-    //     latestMessageTimestamp: -1, // Sort by latest message timestamp (descending)
-    //   },
-    // },
+
+    // Sort by latest message timestamp (descending)
+    { $sort: { timestamp: -1 } },
+
     {
       $skip: Number(skip),
     },
@@ -83,10 +75,7 @@ const sendMessagesUsers = asyncHandler(async (req, res) => {
     },
   ];
 
-  // const msgs = await Messages.find(query, {}, { skip: Number(skip), limit: Number(limit) });
-  // handling find users and sort by latest sent message + also send the number of unseen messages
   const usersData = await Users.aggregate(aggregation);
-  console.log(usersData);
   const numberOfUsers = await Users.countDocuments(aggregation);
   res.status(200).json({ data: usersData, length: numberOfUsers });
 });
@@ -96,78 +85,3 @@ module.exports = {
   sendMessagesUsersValidationSchema,
 };
 
-
-/**
- *
- *
-const sendMessagesUsers = asyncHandler(async (req, res) => {
-  const { skip = 0, limit = 14, id: userId, role: requiredUsersRole } = req.query;
-  const { _id: sender, role } = req.payload;
-  // that var is used to handle sending all receiver messages when the senderRole is admin
-  const senderRole = role === ROLESNAMES.admin ? ROLESNAMES.customer : ROLESNAMES.admin;
-  const query = { senderRole };
-  // select by sender id when senderRole is customer else select by receiver id when sender role is admin
-  if (role === ROLESNAMES.customer) {
-    query.sender = sender;
-  } else if (role === ROLESNAMES.admin) {
-    query.receiver = userId;
-  }
-
-  const aggregation = [
-    {
-      $match: {
-        role: requiredUsersRole || { $in: ROLES },
-      },
-    },
-    {
-      $lookup: {
-        from: 'messages',
-        localField: '_id',
-        foreignField: 'receiver',
-        as: 'messages',
-      },
-    },
-    // {
-    //   $unwind: '$messages',
-    // },
-    {
-      $project: {
-        userName: 1,
-        phoneNumber: 1,
-        role: 1,
-        _id: 1,
-        // unSeenMessages: {
-        //   $sum: {
-        //     $cond: [
-        //       { $and: [{ $eq: ['$messages.receiver', '$_id'] }, { $eq: ['$messages.seen', false] }] }, // Check receiver ID and unread status
-        //       1,
-        //       0,
-        //     ],
-        //   },
-        // },
-        // latestMessageTimestamp: {
-        //   $max: '$messages.createdAt',
-        // },
-      },
-    },
-    // {
-    //   $sort: {
-    //     latestMessageTimestamp: -1, // Sort by latest message timestamp (descending)
-    //   },
-    // },
-    {
-      $skip: Number(skip),
-    },
-    {
-      $limit: Number(limit), // Replace with desired limit value
-    },
-  ];
-
-  // const msgs = await Messages.find(query, {}, { skip: Number(skip), limit: Number(limit) });
-  // handling find users and sort by latest sent message + also send the number of unseen messages
-  const usersData = await Users.aggregate(aggregation);
-  console.log(usersData);
-  const numberOfUsers = await Users.countDocuments(aggregation);
-  res.status(200).json({ data: usersData, length: numberOfUsers });
-});
- */
