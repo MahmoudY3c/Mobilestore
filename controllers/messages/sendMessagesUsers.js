@@ -23,8 +23,19 @@ const sendMessagesUsers = asyncHandler(async (req, res) => {
         // select where role != user role
         pipeline: [
           // { $match: { senderRole: { $ne: role } } }, // Filter by senderRole in messages
-          { $project: { message: 1, seen: 1, createdAt: 1 } }, // Project only required message fields
           { $sort: { createdAt: -1 } },
+          {
+            $project: {
+              message: 1, seen: 1, createdAt: 1,
+              // Use $cond to calculate unseen count for the retrieved message
+              unseen: {
+                // $cond: [{ $eq: ['$seen', false] }, 1, 0],
+                $sum: { $cond: [{ $eq: ['$seen', false] }, 1, 0] },
+              },
+            },
+          }, // Project only required message fields
+          // Limit to the latest message and project required fields
+          // { $limit: 1 },
         ],
       },
     },
@@ -42,9 +53,7 @@ const sendMessagesUsers = asyncHandler(async (req, res) => {
         message: { $last: '$messages.message' },
         timestamp: { $max: '$messages.createdAt' },
         createdAt: { $max: '$createdAt' },
-        unseen: {
-          $sum: { $cond: [{ $eq: ['$messages.seen', false] }, 1, 0] },
-        },
+        unseen: { $sum: '$messages.unseen' },
       },
     },
 
