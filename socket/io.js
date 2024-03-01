@@ -15,6 +15,10 @@ const initIoConnection = server => {
       cors: {
         // origin: 'https://192.168.1.3:3000',
       },
+      allowRequest(req, callback) {
+        // const noOriginHeader = req.headers.origin === undefined;
+        callback(null, true);
+      },
     },
   );
 

@@ -4,7 +4,7 @@ const { asyncHandler } = require('../../handlers/error');
 const { ROLESNAMES } = require('../../config');
 
 const sendMessageValidationSchema = checkSchema({
-  id: {
+  user: {
     trim: true,
     isMongoId: true,
     errorMessage: (value, { req }) => req.t('INVALID_ID', { id: value }),
@@ -12,7 +12,7 @@ const sendMessageValidationSchema = checkSchema({
 }, ['query']);
 
 const sendMessages = asyncHandler(async (req, res) => {
-  const { skip = 0, limit = 14, id: receiverId } = req.query;
+  const { skip = 0, limit = 14, user } = req.query;
   const { _id: sender, role } = req.payload;
   // that var is used to handle sending all receiver messages when the senderRole is admin
   const senderRole = role === ROLESNAMES.admin ? ROLESNAMES.customer : ROLESNAMES.admin;
@@ -21,7 +21,7 @@ const sendMessages = asyncHandler(async (req, res) => {
   if (role === ROLESNAMES.customer) {
     query.receiver = sender;
   } else if (role === ROLESNAMES.admin) {
-    query.sender = receiverId;
+    query.sender = user;
   }
 
   const msgs = await Messages.find(query, {}, { skip: Number(skip), limit: Number(limit) });
