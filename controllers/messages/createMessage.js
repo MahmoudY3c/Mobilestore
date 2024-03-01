@@ -33,7 +33,8 @@ const createMessageValidationSchema = checkSchema(createMessagePayload);
 const createMessage = asyncHandler(async (req, res) => {
   const messagePayload = extractRequiredFields(Object.keys(createMessagePayload), req.body);
   const sender = req.payload._id;
-  const message = new Messages({ ...messagePayload, sender });
+  const senderRole = req.payload.role;
+  const message = new Messages({ ...messagePayload, sender, senderRole });
   await message.save();
   res.status(201).json(message);
 });
