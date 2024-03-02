@@ -14,6 +14,8 @@ const checkAuth = asyncHandler(async (req, res, next) => {
       (req.body.userId && validateMongoId(req.body.userId))
         ? { userId: req.body.userId }
         : {},
+      {},
+      { sort: { createdAt: -1 } },
     );
 
     if (!devUser) throw new Error(req.t('USER_NOT_EXISTS'));
