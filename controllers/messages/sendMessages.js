@@ -26,7 +26,7 @@ const sendMessages = asyncHandler(async (req, res) => {
 
   const msgs = await Messages.find(query, {}, { skip: Number(skip), limit: Number(limit) });
 
-  console.log(query, msgs);
+  console.log(query, role, msgs);
 
   const numberOfProducts = await Messages.countDocuments(query);
   res.status(200).json({ data: msgs, length: numberOfProducts });
