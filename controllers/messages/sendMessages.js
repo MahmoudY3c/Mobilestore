@@ -15,18 +15,18 @@ const sendMessages = asyncHandler(async (req, res) => {
   const { skip = 0, limit = 14, user } = req.query;
   const { _id: sender, role } = req.payload;
   // that var is used to handle sending all receiver messages when the senderRole is admin
-  const senderRole = role === ROLESNAMES.admin ? ROLESNAMES.customer : ROLESNAMES.admin;
+  const senderRole = role === ROLESNAMES.admin ? ROLESNAMES.admin : ROLESNAMES.customer;
   const query = { senderRole };
   // select by sender id when senderRole is customer else select by receiver id when sender role is admin
   if (role === ROLESNAMES.customer) {
-    query.receiver = sender;
+    query.sender = sender;
   } else if (role === ROLESNAMES.admin) {
-    query.sender = user;
+    query.receiver = user;
   }
 
   const msgs = await Messages.find(query, {}, { skip: Number(skip), limit: Number(limit) });
 
-  console.log(query, role, msgs);
+  console.log(query, role);
 
   const numberOfProducts = await Messages.countDocuments(query);
   res.status(200).json({ data: msgs, length: numberOfProducts });

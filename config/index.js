@@ -55,4 +55,6 @@ const config = {
   devEnvs: ['test', 'render', 'development'],
 };
 
+console.log('NODE_ENV=', config.NODE_ENV);
+
 module.exports = { ...config };
