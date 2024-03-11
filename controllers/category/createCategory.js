@@ -26,7 +26,6 @@ const categoriesPayload = isOptional => ({
     optional: true,
     errorMessage: (value, { req }) => req.t('INVALID_DATATYPE', { field: 'titles', type: 'object' }),
     trim: true,
-    escape: true,
     custom: {
       async options(value, { req }) {
         // check if it's one level object and all values is string
