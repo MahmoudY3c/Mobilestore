@@ -5,12 +5,13 @@ const Messages = require('../../db/models/Messages');
 
 const messagesPayload = isOptional => ({
   receiver: {
-    optional: Boolean(isOptional),
+    optional: true, // Boolean(isOptional),
     trim: true,
     isMongoId: true,
     errorMessage: (value, { req }) => req.t('INVALID_ID', { id: value }),
   },
   message: {
+    optional: Boolean(isOptional),
     trim: true,
     isString: true,
     escape: true,
