@@ -8,6 +8,7 @@ const categoriesPayload = isOptional => ({
     trim: true,
     notEmpty: true,
     optional: isOptional,
+    escape: true,
     errorMessage: (value, { req }) => req.t('INVALID_VALUE', { value }),
     custom: {
       async options(value, { req }) {
@@ -20,6 +21,22 @@ const categoriesPayload = isOptional => ({
       },
     },
   },
+  titles: {
+    isObject: true,
+    optional: true,
+    errorMessage: (value, { req }) => req.t('INVALID_DATATYPE', { field: 'titles', type: 'object' }),
+    trim: true,
+    escape: true,
+    custom: {
+      async options(value, { req }) {
+        // check if it's one level object and all values is string
+        const keys = Object.keys(value);
+        const isAllValuesString = keys.every(e => typeof value[e] === 'string');
+        if(!isAllValuesString) throw new Error(req.t('INVALID_DATATYPE', { field: 'titles key value', type: 'string' }))
+        return true;
+      },
+    },
+  }
 });
 
 const createCategoryPayload = categoriesPayload(false);

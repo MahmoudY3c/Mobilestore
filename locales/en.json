@@ -2,6 +2,7 @@
   "ERROR_OCCURED": "An error occurred",
   "MIN_LENGTH": "Sorry the '{{field}}' minimum length is '{{length}}'",
   "INVALID_PHONE_NUMBER": "Invalid phone number",
+  "INVALID_DATATYPE": "The value of {{field}} must be a '{{type}}'",
   "INVALID_ROLE": "Sorry the value you entered '{{value}}' isn't valid please try again",
   "INVALID_VALUE": "Sorry the value you entered '{{value}}' isn't valid please try again",
   "NOT_ALLOWED": "Sorry you are not allowed",

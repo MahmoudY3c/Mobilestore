@@ -6,6 +6,9 @@ const CategoriesSchema = new Schema({
   name: {
     type: String,
   },
+  titles: {
+    type: Object,
+  },
 }, { timestamps: true });
 
 const Categories = mongoose.models.Categories
