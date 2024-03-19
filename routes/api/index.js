@@ -7,6 +7,7 @@ const categoriesRouter = require('./categories');
 const productsRouter = require('./products');
 const messagesRouter = require('./messages');
 const repairServicesRouter = require('./repairServices');
+const infoRouter = require('./info');
 const { JSONErrorHandler, asyncErrorHandler } = require('../../handlers/error');
 const { checkAuth } = require('../../middleware/jwt/checkAuth');
 
@@ -19,6 +20,7 @@ router.use('/categories', categoriesRouter);
 router.use('/products', productsRouter);
 router.use('/messages', checkAuth, messagesRouter);
 router.use('/repair-services', checkAuth, repairServicesRouter);
+router.use('/info', infoRouter);
 
 router.use(asyncErrorHandler);
 router.use(JSONErrorHandler);
