@@ -3,6 +3,7 @@ const { asyncHandler } = require('../../handlers/error');
 const { extractRequiredFields, validateUrl } = require('../../handlers');
 const SiteInfo = require('../../db/models/SiteInfo');
 const multer = require('multer');
+const validator = require('validator');
 
 const infoPayload = isOptional => ({
   logo: {
@@ -20,7 +21,6 @@ const infoPayload = isOptional => ({
       },
     },
   },
-
   name: {
     isString: true,
     optional: true,
@@ -35,86 +35,52 @@ const infoPayload = isOptional => ({
     escape: true,
     errorMessage: (value, { req }) => req.t('INVALID_DATATYPE', { field: 'description', type: 'string' }),
   },
-  facebook: {
-    isString: true,
+  social: {
     optional: true,
-    trim: true,
     custom: {
       options(value, { req }) {
-        if (!validateUrl(value)) {
-          throw new Error(req.t('INVALID_MSG', { field: value }))
+        // allowing to send it as a json string when sending data as form data or as an array when sending it as a json
+        value = typeof value === 'string' ? JSON.parse(value) : value;
+
+        // check if all values is string
+        if (!value?.length) {
+          throw new Error(req.t('INVALID_DATATYPE', { field: 'social', type: 'Array' }))
         }
+
+        value.forEach((v, index) => {
+          // validate value is object
+          if (v.constructor !== Object) {
+            throw new Error(req.t('INVALID_DATATYPE', { field: 'social data', type: 'Object' }));
+          }
+
+          const keys = Object.keys(v);
+
+          // check if keys is equal to 3 => icon, name, url
+          if (keys.length !== 3) {
+            throw new Error(req.t('NOT_EQUAL', { field: 'social objects', length: '3' }));
+          }
+
+          // validate url 
+          if (!validateUrl(v.url)) {
+            throw new Error(req.t('INVALID_MSG', { field: v.url }))
+          }
+
+          // validate values is string
+          keys.forEach(k => {
+            if (typeof v[k] !== 'string') {
+              throw new Error(req.t('INVALID_DATATYPE', { field: 'social data values', type: 'String' }));
+            }
+
+            // escape characters
+            // if (k === 'icon' || k === 'name') {
+            //   req.body.social[index][k] = validator.escape(req.body.social[index][k]);
+            // }
+          })
+        });
 
         return true;
       },
     },
-    errorMessage: (value, { req }) => req.t('INVALID_DATATYPE', { field: 'facebook', type: 'string' }),
-  },
-  twitter: {
-    isString: true,
-    optional: true,
-    trim: true,
-    custom: {
-      options(value, { req }) {
-        if (!validateUrl(value)) {
-          throw new Error(req.t('INVALID_MSG', { field: value }))
-        }
-
-        return true;
-      },
-    },
-    errorMessage: (value, { req }) => req.t('INVALID_DATATYPE', { field: 'twitter', type: 'string' }),
-  },
-  tiktok: {
-    isString: true,
-    optional: true,
-    trim: true,
-    custom: {
-      options(value, { req }) {
-        if (!validateUrl(value)) {
-          throw new Error(req.t('INVALID_MSG', { field: value }))
-        }
-
-        return true;
-      },
-    },
-    errorMessage: (value, { req }) => req.t('INVALID_DATATYPE', { field: 'tiktok', type: 'string' }),
-  },
-  telegram: {
-    isString: true,
-    optional: true,
-    trim: true,
-    custom: {
-      options(value, { req }) {
-        if (!validateUrl(value)) {
-          throw new Error(req.t('INVALID_MSG', { field: value }))
-        }
-
-        return true;
-      },
-    },
-    errorMessage: (value, { req }) => req.t('INVALID_DATATYPE', { field: 'telegram', type: 'string' }),
-  },
-  whatsapp: {
-    isString: true,
-    optional: true,
-    trim: true,
-    custom: {
-      options(value, { req }) {
-        if (!validateUrl(value)) {
-          throw new Error(req.t('INVALID_MSG', { field: value }))
-        }
-
-        return true;
-      },
-    },
-    errorMessage: (value, { req }) => req.t('INVALID_DATATYPE', { field: 'whatsapp', type: 'string' }),
-  },
-  phoneNumber: {
-    optional: true,
-    isMobilePhone: true,
-    trim: true,
-    errorMessage: (value, { req }) => req.t('INVALID_PHONE_NUMBER'),
   },
 });
 
@@ -126,6 +92,7 @@ const logoUpload = upload.single('logo');
 
 const createInfo = asyncHandler(async (req, res) => {
   const infoPayload = extractRequiredFields(Object.keys(createInfoPayload), req.body);
+  console.log(infoPayload)
   const { result } = req;
   if (result) {
     infoPayload.logo = {
@@ -133,6 +100,11 @@ const createInfo = asyncHandler(async (req, res) => {
       fileTitle: result.fileTitle,
       fileName: result.filename,
     };
+  }
+
+  if (infoPayload.social) {
+    // allowing to send it as a json string when sending data as form data or as an array when sending it as a json
+    infoPayload.social = typeof infoPayload.social === 'string' ? JSON.parse(infoPayload.social) : infoPayload.social;
   }
 
   const isExists = await SiteInfo.findOne({});

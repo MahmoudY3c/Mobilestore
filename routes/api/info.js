@@ -21,6 +21,13 @@ infoRouter.post(
 );
 
 infoRouter.get(
+  '/',
+  checkAuth,
+  checkRole('admin'),
+  sendsocialMedia,
+);
+
+infoRouter.get(
   '/social',
   sendsocialMedia,
 );

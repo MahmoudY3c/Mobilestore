@@ -32,6 +32,7 @@ const changePasswordController = async function (req, res) {
 
     // check if user exists or throw error
     await Users.findByCredentials({ id: userId, password: oldPassword });
+    // await Users.findOne({ _id: userId });
 
     // save the access token for expartion handling
     const pass = await hashPassword(newPassword);

@@ -14,7 +14,7 @@
     "api:extract": "node scripts/extract-api-links",
     "api:checkSchema": "node scripts/checkSchema-api-links",
     "api:create": "node scripts/createApiFromControllers",
-    "api:crud": "node scripts/crud-api-links",
+    "api:crud": "node scripts/crud/createCRUD.js",
     "db:schema": "node scripts/crud-api-links",
     "updateKeys": "node keys/generateKeys.js",
     "push": "git add . && git commit -m \"a dummy commit for fix simple issues related to render - %date% %time%\" && git push"
@@ -45,6 +45,7 @@
     "sharp": "0.32.5",
     "socket.io": "^4.7.4",
     "uuidv4": "^6.2.13",
+    "validator": "^13.11.0",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1"
   },
